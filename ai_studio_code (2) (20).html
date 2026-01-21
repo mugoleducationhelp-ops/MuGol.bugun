@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MuGöl Takvim - Sayaçlı</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Cinzel:wght@500;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --glass-bg: rgba(20, 25, 40, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            
+            /* KATEGORİ RENKLERİ */
+            --c-war: #f87171;      
+            --c-sci: #34d399;      
+            --c-art: #c084fc;      
+            --c-dis: #fb923c;      
+            --c-emp: #facc15;      
+            --c-lit: #f472b6;      
+            
+            --accent: #38bdf8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        ::-webkit-scrollbar { width: 0; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+                radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+            background-attachment: fixed;
+            background-size: 200% 200%;
+            animation: aurora 20s ease infinite;
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        @keyframes aurora { 0% {background-position:0% 50%} 50% {background-position:100% 50%} 100% {background-position:0% 50%} }
+
+        .container { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 20px; padding-bottom: 60px; }
+
+        /* --- LOGO --- */
+        .app-header { text-align: center; margin-bottom: 5px; }
+        .app-logo { 
+            font-family: 'Cinzel', serif; font-size: 2.2rem; font-weight: 800; letter-spacing: 2px;
+            background: linear-gradient(to bottom, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* --- GLASS BOX --- */
+        .glass-box {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border); border-radius: 24px; padding: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); position: relative; overflow: hidden;
+        }
+        .glass-box::before {
+            content:''; position:absolute; top:0; left:0; width:100%; height:1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        }
+
+        /* --- KONTROLLER --- */
+        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .month-display { 
+            font-size: 1.1rem; font-weight: 700; color: white; cursor: pointer; 
+            padding: 5px 15px; border-radius: 12px; transition: 0.2s;
+        }
+        .month-display:active { background: rgba(255,255,255,0.1); }
+        .nav-btn {
+            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: white;
+            width: 36px; height: 36px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: 0.2s;
+        }
+        .nav-btn:active { transform: scale(0.9); background: var(--accent); color: #000; }
+
+        /* --- TAKVİM IZGARASI --- */
+        .weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; margin-bottom: 10px; }
+        .wd { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+        .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+        .day {
+            aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border-radius: 14px; font-size: 1rem; font-weight: 600; position: relative; cursor: pointer;
+            background: rgba(255,255,255,0.02); border: 1px solid transparent; transition: 0.2s;
+        }
+        .day:hover { background: rgba(255,255,255,0.08); }
+        .day.selected { 
+            background: white; color: #000; font-weight: 800; 
+            box-shadow: 0 0 20px rgba(255,255,255,0.3); transform: scale(1.05); z-index: 2;
+        }
+        .day.today { border-color: var(--accent); color: var(--accent); }
+        .day.today.selected { border-color: transparent; background: var(--accent); color: #000; }
+        .dots { display: flex; gap: 3px; position: absolute; bottom: 5px; }
+        .dot { width: 4px; height: 4px; border-radius: 50%; }
+        .dot.official { background: var(--c-war); box-shadow: 0 0 5px var(--c-war); }
+        .dot.religious { background: #a855f7; box-shadow: 0 0 5px #a855f7; }
+
+        /* --- TARİH DETAY --- */
+        .date-hero { 
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            padding-bottom: 20px; border-bottom: 1px solid var(--glass-border); margin-bottom: 20px;
+        }
+        .hero-num { 
+            font-family: 'Cinzel', serif; font-size: 5rem; line-height: 0.9; 
+            background: linear-gradient(180deg, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero-full { font-size: 1rem; font-weight: 700; color: var(--accent); margin-top: 5px; letter-spacing: 1px; text-transform: uppercase; }
+        
+        /* Etiketler Satırı */
+        .badges-row { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; justify-content: center; }
+        .info-badge {
+            font-size: 0.8rem; padding: 6px 12px; border-radius: 50px; font-weight: 600;
+            display: flex; align-items: center; gap: 6px;
+        }
+        /* Hicri */
+        .ib-hijri { background: rgba(16, 185, 129, 0.15); color: var(--c-sci); border: 1px solid rgba(16, 185, 129, 0.3); }
+        /* Sayaç (Yeni) */
+        .ib-count { background: rgba(250, 204, 21, 0.15); color: #fde047; border: 1px solid rgba(250, 204, 21, 0.3); }
+        /* Mevsim */
+        .ib-season { background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.3); }
+        /* Ay */
+        .ib-moon { background: rgba(167, 139, 250, 0.15); color: #e9d5ff; border: 1px solid rgba(167, 139, 250, 0.3); }
+
+        /* --- OLAY KARTLARI --- */
+        .section-title { 
+            font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 15px; 
+            font-weight: 800; letter-spacing: 1px; display: flex; align-items: center; justify-content: space-between;
+        }
+        
+        .events-list { max-height: 600px; overflow-y: auto; padding-right: 5px; }
+
+        .event-card {
+            position: relative; padding: 18px; margin-bottom: 15px; border-radius: 18px;
+            overflow: hidden; transition: transform 0.2s; border: 1px solid rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.03);
+        }
+        .event-card:hover { transform: translateY(-3px); }
+        .event-card::before {
+            content: ''; position: absolute; right: -10px; bottom: -15px;
+            font-family: "Font Awesome 6 Free"; font-weight: 900;
+            font-size: 5rem; opacity: 0.1; transform: rotate(-20deg); pointer-events: none;
+        }
+
+        .ec-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; position: relative; z-index: 1;}
+        .ec-year { font-family: 'Cinzel', serif; font-weight: 800; font-size: 1.4rem; }
+        .ec-tag { font-size: 0.65rem; font-weight: 800; padding: 3px 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .ec-text { font-size: 0.95rem; line-height: 1.5; color: rgba(255,255,255,0.9); position: relative; z-index: 1; }
+
+        /* -- TEMALAR -- */
+        .theme-war { background: linear-gradient(135deg, rgba(248,113,113,0.15), rgba(248,113,113,0.02)); border-left: 4px solid var(--c-war); }
+        .theme-war::before { content: '\f6cc'; color: var(--c-war); }
+        .theme-war .ec-year { color: #fca5a5; } .theme-war .ec-tag { background: var(--c-war); color: white; }
+
+        .theme-sci { background: linear-gradient(135deg, rgba(52,211,153,0.15), rgba(52,211,153,0.02)); border-left: 4px solid var(--c-sci); }
+        .theme-sci::before { content: '\f5d2'; color: var(--c-sci); }
+        .theme-sci .ec-year { color: #6ee7b7; } .theme-sci .ec-tag { background: var(--c-sci); color: #064e3b; }
+
+        .theme-lit { background: linear-gradient(135deg, rgba(244,114,182,0.15), rgba(244,114,182,0.02)); border-left: 4px solid var(--c-lit); }
+        .theme-lit::before { content: '\f518'; color: var(--c-lit); }
+        .theme-lit .ec-year { color: #fbcfe8; } .theme-lit .ec-tag { background: var(--c-lit); color: white; }
+
+        .theme-art { background: linear-gradient(135deg, rgba(192,132,252,0.15), rgba(192,132,252,0.02)); border-left: 4px solid var(--c-art); }
+        .theme-art::before { content: '\f53f'; color: var(--c-art); }
+        .theme-art .ec-year { color: #e9d5ff; } .theme-art .ec-tag { background: var(--c-art); color: white; }
+
+        .theme-dis { background: linear-gradient(135deg, rgba(251,146,60,0.15), rgba(251,146,60,0.02)); border-left: 4px solid var(--c-dis); }
+        .theme-dis::before { content: '\f071'; color: var(--c-dis); }
+        .theme-dis .ec-year { color: #fdba74; } .theme-dis .ec-tag { background: var(--c-dis); color: black; }
+
+        .theme-emp { background: linear-gradient(135deg, rgba(250,204,21,0.15), rgba(250,204,21,0.02)); border-left: 4px solid var(--c-emp); }
+        .theme-emp::before { content: '\f521'; color: var(--c-emp); }
+        .theme-emp .ec-year { color: #fde047; } .theme-emp .ec-tag { background: var(--c-emp); color: black; }
+
+        .theme-gen { background: rgba(255,255,255,0.03); border-left: 4px solid var(--text-muted); }
+        .theme-gen::before { content: '\f0ac'; color: var(--text-muted); }
+
+        /* Tatil Uyarısı */
+        .holiday-alert { padding: 15px; margin-bottom: 20px; border-radius: 16px; display: flex; align-items: center; gap: 15px; font-weight: 600; font-size: 0.95rem; animation: fadeIn 0.5s; }
+        .ha-off { background: linear-gradient(90deg, rgba(239,68,68,0.2), transparent); color: #fca5a5; border-left: 4px solid var(--c-war); }
+        .ha-rel { background: linear-gradient(90deg, rgba(168,85,247,0.2), transparent); color: #e9d5ff; border-left: 4px solid #a855f7; }
+
+        /* Date Picker */
+        .date-picker { display: none; gap: 5px; margin-bottom: 15px; justify-content: center; }
+        .date-picker.active { display: flex; animation: fadeIn 0.3s; }
+        .dp-input { background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); color: white; padding: 8px; border-radius: 8px; text-align: center; }
+        .dp-btn { background: var(--accent); border: none; padding: 8px 15px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+
+        @keyframes fadeIn { from{opacity:0; transform:translateY(5px)} to{opacity:1; transform:translateY(0)} }
+        @media (max-width: 380px) { .hero-num { font-size: 4rem; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="app-header">
+        <div class="app-logo">MuGöl Takvim</div>
+    </div>
+
+    <!-- TAKVİM -->
+    <div class="glass-box">
+        <div class="cal-header">
+            <button class="nav-btn" onclick="changeDate(-1)"><i class="fas fa-chevron-left"></i></button>
+            <div class="month-display" id="monthTxt" onclick="togglePicker()">Ocak 2026</div>
+            <div class="nav-controls">
+                <button class="nav-btn" onclick="changeDate(1)"><i class="fas fa-chevron-right"></i></button>
+                <button class="nav-btn" onclick="resetToday()"><i class="fas fa-calendar-day"></i></button>
+            </div>
+        </div>
+
+        <div class="date-picker" id="datePicker">
+            <input type="number" id="jumpYear" class="dp-input" style="width:70px" placeholder="Yıl">
+            <select id="jumpMonth" class="dp-input"><option value="0">Ocak</option><option value="1">Şubat</option><option value="2">Mart</option><option value="3">Nisan</option><option value="4">Mayıs</option><option value="5">Haziran</option><option value="6">Temmuz</option><option value="7">Ağustos</option><option value="8">Eylül</option><option value="9">Ekim</option><option value="10">Kasım</option><option value="11">Aralık</option></select>
+            <button class="dp-btn" onclick="applyJump()">Git</button>
+        </div>
+
+        <div class="weekdays">
+            <div class="wd">Pzt</div><div class="wd">Sal</div><div class="wd">Çar</div><div class="wd">Per</div><div class="wd">Cum</div>
+            <div class="wd" style="color:var(--c-war)">Cmt</div><div class="wd" style="color:var(--c-war)">Paz</div>
+        </div>
+        <div class="days-grid" id="calGrid"></div>
+    </div>
+
+    <!-- DETAYLAR -->
+    <div class="glass-box">
+        <div class="date-hero">
+            <div class="hero-num" id="dNum">21</div>
+            <div class="hero-full" id="dFull">21 OCAK 2026, ÇARŞAMBA</div>
+            
+            <div class="badges-row">
+                <div class="info-badge ib-hijri"><i class="fas fa-mosque"></i> <span id="hijriText">--</span></div>
+                <!-- SAYAÇ BURADA -->
+                <div class="info-badge ib-count" id="countDisplay"><i class="fas fa-hourglass-half"></i> <span id="countText">--</span></div>
+                <div class="info-badge ib-season"><i id="seasonIcon" class="fas fa-snowflake"></i> <span id="seasonText">--</span></div>
+                <div class="info-badge ib-moon"><i id="moonIcon" class="fas fa-circle"></i> <span id="moonText">--</span></div>
+            </div>
+        </div>
+
+        <div id="holidayArea"></div>
+
+        <div class="sec-title">
+            <div class="section-title">
+                <span><i class="fas fa-history" style="color:var(--accent)"></i> TARİHTE BUGÜN</span>
+                <button onclick="copyContent()" style="background:none; border:none; color:var(--text-muted); cursor:pointer"><i class="far fa-copy"></i></button>
+            </div>
+        </div>
+        
+        <div class="events-list" id="historyList"></div>
+    </div>
+</div>
+
+<script>
+    const mNames = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+    const dNames = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
+    
+    // --- AKILLI FİLTRE ---
+    const keywords = {
+        war: ['savaş', 'muharebe', 'sefer', 'kuşatma', 'cephe', 'taarruz', 'işgal', 'fetih', 'ordu', 'çatışma'],
+        disaster: ['yangın', 'deprem', 'sel', 'kaza', 'patlama', 'felaket', 'salgın', 'vefat', 'öldü', 'suikast'],
+        treaty: ['antlaşma', 'anlaşma', 'barış', 'imza', 'mütareke'],
+        science: ['icat', 'keşif', 'bilim', 'uzay', 'teknoloji', 'kuruldu', 'ilk kez', 'nobel', 'patent'],
+        literature: ['kitap', 'roman', 'şiir', 'şair', 'yazar', 'edebiyat', 'dergi', 'yayınlandı', 'yazıldı'],
+        art: ['film', 'sanat', 'müze', 'ressam', 'eser', 'heykel', 'müzik', 'konser', 'sergi'],
+        empire: ['imparator', 'padişah', 'sultan', 'kral', 'cumhuriyet', 'devlet', 'başkan', 'kuruluş']
+    };
+
+    const fixedHolidays = {
+        '01-01': { n: 'Yılbaşı', t: 'official' }, '04-23': { n: 'Ulusal Egemenlik ve Çocuk Byr.', t: 'official' },
+        '05-01': { n: 'Emek ve Dayanışma Günü', t: 'official' }, '05-19': { n: 'Atatürk\'ü Anma, Gençlik ve Spor Byr.', t: 'official' },
+        '07-15': { n: 'Demokrasi ve Milli Birlik', t: 'official' }, '08-30': { n: 'Zafer Bayramı', t: 'official' },
+        '10-29': { n: 'Cumhuriyet Bayramı', t: 'official' }
+    };
+    const variableHolidays2026 = {
+        '2026-03-20': { n: 'Ramazan 1. Gün', t: 'religious' }, '2026-03-21': { n: 'Ramazan 2. Gün', t: 'religious' },
+        '2026-03-22': { n: 'Ramazan 3. Gün', t: 'religious' }, '2026-05-27': { n: 'Kurban 1. Gün', t: 'religious' },
+        '2026-05-28': { n: 'Kurban 2. Gün', t: 'religious' }, '2026-05-29': { n: 'Kurban 3. Gün', t: 'religious' },
+        '2026-05-30': { n: 'Kurban 4. Gün', t: 'religious' }
+    };
+
+    const offlineDB = {
+        '01-21': [
+            {y:1774, t:'Osmanlı Padişahı III. Mustafa vefat etti, I. Abdülhamid tahta çıktı.', c:'empire'},
+            {y:1950, t:'İngiliz yazar George Orwell vefat etti.', c:'literature'},
+            {y:2024, t:'Alper Gezeravcı uzaya gitti.', c:'science'},
+            {y:1924, t:'Vladimir Lenin vefat etti.', c:'disaster'}
+        ],
+        '01-22': [
+            {y:1517, t:'Yavuz Sultan Selim Ridaniye Zaferi\'ni kazandı.', c:'war'},
+            {y:1788, t:'Lord Byron doğdu.', c:'literature'},
+            {y:1984, t:'Apple Macintosh tanıtıldı.', c:'science'}
+        ],
+        '01-24': [{y:1993, t:'Gazeteci yazar Uğur Mumcu suikaste uğradı.', c:'disaster'}],
+        '04-23': [{y:1920, t:'TBMM açıldı.', c:'empire'}],
+        '05-29': [{y:1453, t:'İstanbul Fethedildi.', c:'war'}],
+        '08-30': [{y:1922, t:'Büyük Taarruz Zaferi.', c:'war'}],
+        '10-29': [{y:1923, t:'Türkiye Cumhuriyeti ilan edildi.', c:'empire'}]
+    };
+
+    const genFacts = ["Tarihçiler bu günü, sessiz ama önemli bir geçiş günü olarak not eder.", "Geçmişte bugün, insanlık tarihi için yeni bir sayfa açıldı."];
+
+    let cY = 2026, cM = 0;
+    let currentEvents = [];
+    const today = new Date();
+
+    function init() {
+        if(today.getFullYear() === 2026) { cY=2026; cM=today.getMonth(); }
+        renderCal(); 
+        setTimeout(() => selDay(today.getDate()), 50);
+    }
+
+    function renderCal() {
+        document.getElementById('monthTxt').innerText = `${mNames[cM]} ${cY}`;
+        const gr = document.getElementById('calGrid'); gr.innerHTML = '';
+        const f = new Date(cY, cM, 1);
+        const l = new Date(cY, cM+1, 0);
+        const start = (f.getDay() + 6) % 7;
+
+        for(let i=0; i<start; i++) gr.innerHTML += `<div class="day" style="opacity:0.3; pointer-events:none"></div>`;
+
+        for(let d=1; d<=l.getDate(); d++) {
+            const el = document.createElement('div');
+            el.className = 'day';
+            el.innerText = d;
+            
+            const sk = `${String(cM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+            const lk = `${cY}-${String(cM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+            let hType = fixedHolidays[sk]?.t || variableHolidays2026[lk]?.t;
+            
+            if(hType) el.innerHTML += `<div class="dots"><div class="dot ${hType === 'official' ? 'official' : 'religious'}"></div></div>`;
+            if(d === today.getDate() && cM === today.getMonth() && cY === today.getFullYear()) el.classList.add('today');
+
+            el.onclick = () => {
+                document.querySelectorAll('.day').forEach(x => x.classList.remove('selected'));
+                el.classList.add('selected');
+                selDay(d);
+            }
+            gr.appendChild(el);
+        }
+    }
+
+    async function selDay(d) {
+        const dateObj = new Date(cY, cM, d);
+        const sk = `${String(cM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+        const lk = `${cY}-${String(cM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+
+        document.getElementById('dNum').innerText = d;
+        document.getElementById('dFull').innerText = `${d} ${mNames[cM].toUpperCase()} ${cY}, ${dNames[dateObj.getDay()].toUpperCase()}`;
+
+        // SAYAÇ HESAPLAMA
+        const now = new Date(); now.setHours(0,0,0,0);
+        const target = new Date(cY, cM, d); target.setHours(0,0,0,0);
+        const diff = Math.ceil((target - now) / (1000 * 60 * 60 * 24));
+        
+        const countBox = document.getElementById('countDisplay');
+        const countText = document.getElementById('countText');
+        
+        if(diff === 0) { countBox.style.display = 'none'; }
+        else {
+            countBox.style.display = 'inline-flex';
+            countText.innerText = diff > 0 ? `${diff} Gün Kaldı` : `${Math.abs(diff)} Gün Geçti`;
+        }
+
+        // Diğerleri
+        const hijri = getHijriDate(dateObj);
+        document.getElementById('hijriText').innerText = `${hijri.d} ${hijri.m} ${hijri.y}`;
+        const moon = getMoonPhase(cY, cM+1, d);
+        document.getElementById('moonText').innerText = moon.name;
+        document.getElementById('moonIcon').className = moon.icon;
+        const season = getSeason(cM, d);
+        document.getElementById('seasonText').innerText = season.name;
+        document.getElementById('seasonIcon').className = season.icon;
+
+        // Tatil
+        const ha = document.getElementById('holidayArea');
+        let hInfo = fixedHolidays[sk] || variableHolidays2026[lk];
+        if(hInfo) {
+            let cls = hInfo.t === 'official' ? 'ha-off' : 'ha-rel';
+            ha.innerHTML = `<div class="holiday-alert ${cls}"><i class="fas fa-flag" style="font-size:1.5rem"></i> <div>${hInfo.n}</div></div>`;
+        } else ha.innerHTML = '';
+
+        // Olaylar
+        const list = document.getElementById('historyList');
+        list.innerHTML = '<div style="text-align:center; opacity:0.6; padding:20px">Kütüphane taranıyor...</div>';
+        
+        let events = offlineDB[sk] ? [...offlineDB[sk]] : [];
+
+        try {
+            const controller = new AbortController();
+            setTimeout(() => controller.abort(), 1200);
+            const res = await fetch(`https://tr.wikipedia.org/api/rest_v1/feed/onthisday/events/${cM+1}/${d}`, { signal: controller.signal });
+            if(res.ok) {
+                const data = await res.json();
+                data.events.forEach(item => {
+                    const txt = item.text.toLowerCase();
+                    let category = 'general';
+                    let isRelevant = false;
+                    for (const [cat, words] of Object.entries(keywords)) {
+                        if (words.some(w => txt.includes(w))) { category = cat; isRelevant = true; break; }
+                    }
+                    if(isRelevant && !events.some(e => e.y == item.year)) {
+                        events.push({ y: item.year, t: item.text, c: category });
+                    }
+                });
+            }
+        } catch(err) {}
+
+        if(events.length === 0) events.push({ y: 'BİLGİ', t: genFacts[d % genFacts.length], c: 'general' });
+        events.sort((a,b) => { if(a.y === 'BİLGİ') return 1; if(b.y === 'BİLGİ') return -1; return a.y - b.y; });
+        currentEvents = events;
+
+        let html = '';
+        events.forEach(e => {
+            let tagLabel = 'Olay', theme = 'theme-gen';
+            if(e.c === 'war') { tagLabel = 'SAVAŞ'; theme = 'theme-war'; }
+            else if(e.c === 'science') { tagLabel = 'BİLİM'; theme = 'theme-sci'; }
+            else if(e.c === 'literature') { tagLabel = 'EDEBİYAT'; theme = 'theme-lit'; }
+            else if(e.c === 'art') { tagLabel = 'SANAT'; theme = 'theme-art'; }
+            else if(e.c === 'disaster') { tagLabel = 'AFET/OLAY'; theme = 'theme-dis'; }
+            else if(e.c === 'empire') { tagLabel = 'DEVLET'; theme = 'theme-emp'; }
+
+            html += `
+                <div class="event-card ${theme}">
+                    <div class="ec-header">
+                        <span class="ec-year">${e.y}</span>
+                        <span class="ec-tag">${tagLabel}</span>
+                    </div>
+                    <div class="ec-text">${e.t}</div>
+                </div>`;
+        });
+        list.innerHTML = html;
+    }
+
+    function getHijriDate(date) {
+        const day = date.getDate(); const month = date.getMonth(); const year = date.getFullYear();
+        let m = month + 1; let y = year; if (m < 3) { y -= 1; m += 12; }
+        let a = Math.floor(y / 100); let b = 2 - a + Math.floor(a / 4); if (y < 1583) b = 0;
+        let jd = Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + day + b - 1524;
+        let z = jd - 1948440 + 10632; let n = Math.floor((z - 1) / 10631); z = z - 10631 * n + 354;
+        let j = (Math.floor((10985 - z) / 5316)) * (Math.floor((50 * z) / 17719)) + (Math.floor(z / 5670)) * (Math.floor((43 * z) / 15238));
+        z = z - (Math.floor((30 - j) / 15)) * (Math.floor((17719 * j) / 50)) - (Math.floor(j / 16)) * (Math.floor((15238 * j) / 43)) + 29;
+        let mH = Math.floor(24 * z / 709); let dH = z - Math.floor(709 * mH / 24); let yH = 30 * n + j - 30;
+        const hM = ["Muharrem", "Safer", "Rebiülevvel", "Rebiülahir", "Cemaziyelevvel", "Cemaziyelahir", "Recep", "Şaban", "Ramazan", "Şevval", "Zilkade", "Zilhicce"];
+        return { d: dH, m: hM[mH - 1], y: yH };
+    }
+
+    function getSeason(m, d) {
+        if (m < 2 || (m === 2 && d < 21)) return {name:'Kış', icon:'fas fa-snowflake'};
+        if (m < 5 || (m === 5 && d < 21)) return {name:'İlkbahar', icon:'fas fa-seedling'};
+        if (m < 8 || (m === 8 && d < 22)) return {name:'Yaz', icon:'fas fa-sun'};
+        if (m < 11 || (m === 11 && d < 21)) return {name:'Sonbahar', icon:'fab fa-canadian-maple-leaf'};
+        return {name:'Kış', icon:'fas fa-snowflake'};
+    }
+
+    function getMoonPhase(year, month, day) {
+        let r = year % 100; r %= 19; if (r > 9) { r -= 19; }
+        r = ((r * 11) % 30) + parseInt(month) + parseInt(day);
+        if (month < 3) { r += 2; } r -= ((year < 2000) ? 4 : 8.3);
+        r = Math.floor(r + 0.5) % 30; let res = (r < 0) ? r + 30 : r;
+        if(res < 2) return {name:'Yeni Ay', icon:'fas fa-circle'};
+        if(res < 7) return {name:'Hilal', icon:'fas fa-moon'};
+        if(res < 10) return {name:'İlk Dördün', icon:'fas fa-adjust'};
+        if(res < 16) return {name:'Dolunay', icon:'far fa-circle'};
+        if(res < 24) return {name:'Son Dördün', icon:'fas fa-adjust'};
+        return {name:'Hilal', icon:'fas fa-moon'};
+    }
+
+    function changeDate(dir) { cM += dir; if(cM > 11) { cM = 0; cY++; } if(cM < 0) { cM = 11; cY--; } renderCal(); selDay(1); }
+    function resetToday() { if(today.getFullYear() === 2026) { cY=2026; cM=today.getMonth(); } renderCal(); setTimeout(() => document.querySelector('.day.today')?.click(), 50); }
+    function togglePicker() { document.getElementById('datePicker').classList.toggle('active'); }
+    function applyJump() { const y = parseInt(document.getElementById('jumpYear').value); if(y) { cY = y; cM = parseInt(document.getElementById('jumpMonth').value); renderCal(); selDay(1); togglePicker(); } }
+    function copyContent() { if(!currentEvents.length) return; let txt = `📅 MuGöl Takvim (${document.getElementById('dFull').innerText})\n\n`; currentEvents.forEach(e => txt += `• ${e.y}: ${e.t}\n`); navigator.clipboard.writeText(txt).then(() => alert("Kopyalandı!")); }
+
+    init();
+</script>
+</body>
+</html>
