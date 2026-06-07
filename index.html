@@ -3,427 +3,1122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MuGöl Takvim - Sayaçlı & Paylaşımlı</title>
-    
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1880946354382681" crossorigin="anonymous"></script>
-    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
+    <title>MuGöl Takvim - Tarihte Bugün</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-    <!-- Fontlar (Sadece Nunito) -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Oswald:wght@300;400;500;600;700&family=Nunito:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
     <style>
         :root {
-            --bg-dark: #0f172a;
-            --glass-bg: rgba(20, 25, 40, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --text-main: #ffffff;
-            --text-muted: #94a3b8;
-            
-            --c-war: #f87171;      
-            --c-sci: #34d399;      
-            --c-art: #c084fc;      
-            --c-dis: #fb923c;      
-            --c-emp: #facc15;      
-            --c-lit: #f472b6;      
-            
-            --accent: #38bdf8;
+            --bg: #08090f;
+            --surface: rgba(15, 18, 30, 0.85);
+            --border: rgba(255,255,255,0.07);
+            --text: #f0ead6;
+            --muted: #6b7280;
+            --accent: #c9a96e;
+            --accent2: #e8d5a3;
+
+            --war:     #e05c5c;
+            --sci:     #4abe9e;
+            --lit:     #e07ab0;
+            --art:     #a07de0;
+            --dis:     #e08a40;
+            --emp:     #e0c040;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        ::-webkit-scrollbar { width: 0; }
+        /* ─── LIGHT MODE ─── */
+        :root.light-mode {
+            --bg: #f5f0e8;
+            --surface: rgba(255, 253, 245, 0.92);
+            --border: rgba(0,0,0,0.1);
+            --text: #1c1710;
+            --muted: #6b5e4a;
+            --accent: #9a6e30;
+            --accent2: #7a5020;
+        }
+        :root.light-mode body {
+            background: var(--bg) !important;
+            background-image:
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(154,110,48,0.1) 0%, transparent 70%),
+                radial-gradient(ellipse 60% 40% at 0% 100%, rgba(120,80,40,0.06) 0%, transparent 60%) !important;
+        }
+        :root.light-mode .glass-box { background: rgba(255,252,242,0.94); border-color: rgba(0,0,0,0.08); }
+        :root.light-mode .day { color: rgba(28,23,16,0.7); }
+        :root.light-mode .daily-quote { color: rgba(28,23,16,0.55); }
+        :root.light-mode .ec-text { color: rgba(28,23,16,0.85); }
+        :root.light-mode .filter-btn { color: var(--muted); background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.1); }
+        :root.light-mode .share-btn { color: var(--muted); background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.1); }
+        :root.light-mode .event-card { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.07); }
+        :root.light-mode .ec-body { border-top-color: rgba(0,0,0,0.07); }
+        :root.light-mode .ec-text { color: rgba(28,23,16,0.82); }
+
+        /* ─── LIGHT MODE — kart renk uyumu ─── */
+        :root.light-mode .theme-war  .ec-top { background: linear-gradient(135deg, rgba(180,40,40,0.12) 0%, rgba(180,40,40,0.06) 100%); }
+        :root.light-mode .theme-war  .ec-year { color: #a01818; }
+        :root.light-mode .theme-sci  .ec-top { background: linear-gradient(135deg, rgba(20,130,100,0.12) 0%, rgba(20,130,100,0.06) 100%); }
+        :root.light-mode .theme-sci  .ec-year { color: #116645; }
+        :root.light-mode .theme-lit  .ec-top { background: linear-gradient(135deg, rgba(170,50,110,0.12) 0%, rgba(170,50,110,0.06) 100%); }
+        :root.light-mode .theme-lit  .ec-year { color: #8a1050; }
+        :root.light-mode .theme-art  .ec-top { background: linear-gradient(135deg, rgba(90,40,180,0.12) 0%, rgba(90,40,180,0.06) 100%); }
+        :root.light-mode .theme-art  .ec-year { color: #4a1a90; }
+        :root.light-mode .theme-dis  .ec-top { background: linear-gradient(135deg, rgba(190,90,10,0.12) 0%, rgba(190,90,10,0.06) 100%); }
+        :root.light-mode .theme-dis  .ec-year { color: #8b4010; }
+        :root.light-mode .theme-emp  .ec-top { background: linear-gradient(135deg, rgba(160,130,10,0.12) 0%, rgba(160,130,10,0.06) 100%); }
+        :root.light-mode .theme-emp  .ec-year { color: #7a5c00; }
+        :root.light-mode .theme-gen  .ec-top { background: linear-gradient(135deg, rgba(80,70,60,0.08) 0%, rgba(60,50,40,0.04) 100%); }
+        :root.light-mode .theme-gen  .ec-year { color: rgba(28,23,16,0.7); }
+        :root.light-mode .ec-tag { background: rgba(0,0,0,0.14); color: rgba(28,23,16,0.82); }
+        :root.light-mode .share-btn { background: rgba(0,0,0,0.07); color: rgba(28,23,16,0.55); border: none; }
+        :root.light-mode .share-btn:hover { background: rgba(0,0,0,0.14); color: rgba(28,23,16,0.9); }
+        :root.light-mode .ec-body { border-top-color: rgba(0,0,0,0.07); background: transparent; }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+        ::-webkit-scrollbar { width:3px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius:10px; }
 
         body {
-            font-family: 'Nunito', sans-serif;
-            background-color: var(--bg-dark);
-            background-image: 
-                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
-                radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
-                radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
-            background-attachment: fixed;
-            background-size: 200% 200%;
-            animation: aurora 20s ease infinite;
-            color: var(--text-main);
+            font-family: 'Nunito', 'Crimson Pro', Georgia, sans-serif;
+            background: var(--bg);
+            background-image:
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(201,169,110,0.12) 0%, transparent 70%),
+                radial-gradient(ellipse 60% 40% at 0% 100%, rgba(80,40,120,0.08) 0%, transparent 60%);
+            color: var(--text);
             min-height: 100vh;
-            padding: 15px;
+            padding: 20px 16px 80px;
             display: flex;
             justify-content: center;
             align-items: flex-start;
         }
 
+        .container {
+            width: 100%;
+            max-width: 490px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
 
-        /* ── Portal Geri Butonu ── */
+        /* ─── HEADER ─── */
+        .app-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0 5px;
+        }
+        .app-logo {
+            font-family: 'Nunito', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: 6px;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+        .app-tagline {
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            color: var(--muted);
+            text-transform: uppercase;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 300;
+        }
         .portal-back-btn {
             text-decoration: none;
-            color: #94a3b8;
-            font-size: 0.78rem;
-            font-weight: 700;
+            color: var(--muted);
+            font-size: 0.72rem;
+            font-weight: 600;
             display: inline-flex;
             align-items: center;
             gap: 5px;
-            padding: 6px 14px;
-            border-radius: 12px;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            transition: all 0.25s;
+            padding: 5px 12px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            letter-spacing: 1px;
+            font-family: 'Nunito', sans-serif;
+            transition: all 0.2s;
         }
-        .portal-back-btn:hover { color: white; background: rgba(255,255,255,0.1); transform: translateX(-2px); }
-        .portal-back-btn svg { width: 13px; height: 13px; }
+        .portal-back-btn:hover { color: var(--accent); border-color: rgba(201,169,110,0.3); }
 
-        @keyframes aurora { 0% {background-position:0% 50%} 50% {background-position:100% 50%} 100% {background-position:0% 50%} }
-
-        .container { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 20px; padding-bottom: 60px; }
-
-        /* --- LOGO --- */
-        .app-header { text-align: center; margin-bottom: 5px; }
-        .app-logo { 
-            font-family: 'Nunito', sans-serif; font-size: 2.2rem; font-weight: 800; letter-spacing: 2px;
-            background: linear-gradient(to bottom, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        /* --- GLASS BOX --- */
+        /* ─── GLASS BOX ─── */
         .glass-box {
-            background: var(--glass-bg);
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--glass-border); border-radius: 24px; padding: 20px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5); position: relative; overflow: hidden;
+            background: var(--surface);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 22px;
+            position: relative;
+            overflow: hidden;
         }
         .glass-box::before {
-            content:''; position:absolute; top:0; left:0; width:100%; height:1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            content: '';
+            position: absolute;
+            top: 0; left: 15%; width: 70%; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(201,169,110,0.4), transparent);
         }
 
-        /* --- KONTROLLER --- */
-        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .month-display { 
-            font-size: 1.1rem; font-weight: 700; color: white; cursor: pointer; 
-            padding: 5px 15px; border-radius: 12px; transition: 0.2s;
+        /* ─── CALENDAR HEADER ─── */
+        .cal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
         }
-        .month-display:active { background: rgba(255,255,255,0.1); }
+        .nav-controls { display: flex; gap: 6px; }
+        .month-display {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent2);
+            cursor: pointer;
+            padding: 5px 12px;
+            border-radius: 10px;
+            letter-spacing: 2px;
+            transition: 0.2s;
+        }
+        .month-display:hover { background: rgba(255,255,255,0.05); }
         .nav-btn {
-            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: white;
-            width: 36px; height: 36px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: 0.2s;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            width: 34px; height: 34px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.8rem;
         }
-        .nav-btn:active { transform: scale(0.9); background: var(--accent); color: #000; }
+        .nav-btn:hover { color: var(--accent); border-color: rgba(201,169,110,0.3); }
+        .nav-btn:active { transform: scale(0.92); }
 
-        /* --- TAKVİM IZGARASI --- */
-        .weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; margin-bottom: 10px; }
-        .wd { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
-        .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+        /* ─── CALENDAR GRID ─── */
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .wd {
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 400;
+            color: var(--muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 4px 0;
+        }
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
         .day {
-            aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            border-radius: 14px; font-size: 1rem; font-weight: 600; position: relative; cursor: pointer;
-            background: rgba(255,255,255,0.02); border: 1px solid transparent; transition: 0.2s;
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-family: 'Crimson Pro', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            position: relative;
+            cursor: pointer;
+            color: rgba(240,234,214,0.75);
+            transition: 0.15s;
         }
-        .day:hover { background: rgba(255,255,255,0.08); }
-        .day.selected { 
-            background: white; color: #000; font-weight: 800; 
-            box-shadow: 0 0 20px rgba(255,255,255,0.3); transform: scale(1.05); z-index: 2;
+        .day:hover { background: rgba(255,255,255,0.06); color: var(--text); }
+        .day.today { color: var(--accent); font-weight: 700; }
+        .day.today::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            background: var(--accent);
         }
-        .day.today { border-color: var(--accent); color: var(--accent); }
-        .day.today.selected { border-color: transparent; background: var(--accent); color: #000; }
-        .dots { display: flex; gap: 3px; position: absolute; bottom: 5px; }
-        .dot { width: 4px; height: 4px; border-radius: 50%; }
-        .dot.official { background: var(--c-war); box-shadow: 0 0 5px var(--c-war); }
-        .dot.religious { background: #a855f7; box-shadow: 0 0 5px #a855f7; }
-
-        /* --- TARİH DETAY --- */
-        .date-hero { 
-            display: flex; flex-direction: column; align-items: center; text-align: center;
-            padding-bottom: 20px; border-bottom: 1px solid var(--glass-border); margin-bottom: 15px;
+        .day.selected {
+            background: var(--accent);
+            color: #1a1200;
+            font-weight: 800;
+            box-shadow: 0 0 20px rgba(201,169,110,0.3);
         }
-        .hero-num { 
-            font-family: 'Nunito', sans-serif; font-size: 5rem; font-weight: 900; line-height: 0.9; 
-            background: linear-gradient(180deg, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-shadow: 0 10px 20px rgba(0,0,0,0.3);
-        }
-        .hero-full { font-size: 1rem; font-weight: 800; color: var(--accent); margin-top: 5px; letter-spacing: 1.5px; text-transform: uppercase; }
-        
-        .badges-row { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; justify-content: center; }
-        .info-badge { font-size: 0.8rem; padding: 6px 12px; border-radius: 50px; font-weight: 700; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        .ib-hijri { background: rgba(16, 185, 129, 0.15); color: var(--c-sci); border: 1px solid rgba(16, 185, 129, 0.3); }
-        .ib-count { background: rgba(250, 204, 21, 0.15); color: #fde047; border: 1px solid rgba(250, 204, 21, 0.3); }
-        .ib-season { background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.3); }
-        .ib-moon { background: rgba(167, 139, 250, 0.15); color: #e9d5ff; border: 1px solid rgba(167, 139, 250, 0.3); }
+        .day.selected.today::after { background: #1a1200; }
+        .dots { display: flex; gap: 2px; position: absolute; bottom: 3px; }
+        .dot { width: 3px; height: 3px; border-radius: 50%; }
+        .dot.official { background: var(--war); }
+        .dot.religious { background: #a07de0; }
 
-        .daily-quote {
-            background: rgba(255,255,255,0.03); border-radius: 12px; padding: 15px; text-align: center;
-            font-style: italic; font-size: 0.9rem; color: #cbd5e1; margin-bottom: 20px; border-left: 3px solid var(--accent);
-            position: relative; font-weight: 500;
-        }
-        .daily-quote::before { content: '"'; font-size: 3rem; position: absolute; opacity: 0.1; top: -5px; left: 10px; font-family: 'Nunito', sans-serif; font-style: normal; }
-
-        /* --- OLAY KARTLARI VE FİLTRELER --- */
-        .section-title { 
-            font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; 
-            font-weight: 800; letter-spacing: 1px; display: flex; align-items: center; justify-content: space-between;
-        }
-
-        .filter-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 10px; }
-        .filter-btn {
-            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: var(--text-muted);
-            padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; cursor: pointer; white-space: nowrap; transition: 0.3s;
-        }
-        .filter-btn.active { background: var(--text-main); color: var(--bg-dark); border-color: var(--text-main); }
-        
-        .events-list { max-height: 600px; overflow-y: auto; padding-right: 5px; scroll-behavior: smooth; }
-
-        .event-card {
-            position: relative; padding: 18px; margin-bottom: 15px; border-radius: 18px;
-            overflow: hidden; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
-            border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.02);
-            opacity: 0; animation: cardEntry 0.5s ease forwards;
-        }
-        @keyframes cardEntry { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-
-        .event-card:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); background: rgba(255,255,255,0.05); }
-        .event-card::before {
-            content: ''; position: absolute; right: -10px; bottom: -15px;
-            font-family: "Font Awesome 6 Free"; font-weight: 900;
-            font-size: 5rem; opacity: 0.08; transform: rotate(-20deg); pointer-events: none; transition: 0.3s;
-        }
-        .event-card:hover::before { opacity: 0.15; transform: rotate(-10deg) scale(1.1); }
-
-        .ec-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; position: relative; z-index: 1;}
-        .ec-title-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-        .ec-year { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.4rem; }
-        .ec-tag { font-size: 0.65rem; font-weight: 800; padding: 3px 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .ec-text { font-size: 0.95rem; font-weight: 500; line-height: 1.5; color: rgba(255,255,255,0.9); position: relative; z-index: 1; }
-        
-        .share-btn {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; width: 32px; height: 32px;
-            border-radius: 50%; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center;
-        }
-        .share-btn:hover { background: var(--accent); color: #000; transform: scale(1.1); border-color: transparent; }
-
-        /* OLAY SEÇİM KUTUSU */
-        .custom-checkbox {
-            appearance: none; -webkit-appearance: none;
-            width: 22px; height: 22px; margin: 0;
-            border: 2px solid rgba(255,255,255,0.3); border-radius: 6px;
-            background: rgba(0,0,0,0.2); cursor: pointer;
-            position: relative; transition: 0.2s; display: none; align-items: center; justify-content: center;
-        }
-        .custom-checkbox:checked { background: var(--accent); border-color: var(--accent); }
-        .custom-checkbox:checked::after {
-            content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
-            color: #000; font-size: 12px; position: absolute;
-        }
-
-        .selection-mode .custom-checkbox { display: flex; }
-        .selection-mode .share-btn { display: none; }
-
-        /* -- UI TEMALAR -- */
-        .theme-war { border-left: 4px solid var(--c-war); }
-        .theme-war::before { content: '\f6cc'; color: var(--c-war); }
-        .theme-war .ec-year { color: #fca5a5; } .theme-war .ec-tag { background: rgba(248,113,113,0.2); color: #fca5a5; border: 1px solid rgba(248,113,113,0.3); }
-
-        .theme-sci { border-left: 4px solid var(--c-sci); }
-        .theme-sci::before { content: '\f5d2'; color: var(--c-sci); }
-        .theme-sci .ec-year { color: #6ee7b7; } .theme-sci .ec-tag { background: rgba(52,211,153,0.2); color: #6ee7b7; border: 1px solid rgba(52,211,153,0.3); }
-
-        .theme-lit { border-left: 4px solid var(--c-lit); }
-        .theme-lit::before { content: '\f518'; color: var(--c-lit); }
-        .theme-lit .ec-year { color: #fbcfe8; } .theme-lit .ec-tag { background: rgba(244,114,182,0.2); color: #fbcfe8; border: 1px solid rgba(244,114,182,0.3); }
-
-        .theme-art { border-left: 4px solid var(--c-art); }
-        .theme-art::before { content: '\f53f'; color: var(--c-art); }
-        .theme-art .ec-year { color: #e9d5ff; } .theme-art .ec-tag { background: rgba(192,132,252,0.2); color: #e9d5ff; border: 1px solid rgba(192,132,252,0.3); }
-
-        .theme-dis { border-left: 4px solid var(--c-dis); }
-        .theme-dis::before { content: '\f071'; color: var(--c-dis); }
-        .theme-dis .ec-year { color: #fdba74; } .theme-dis .ec-tag { background: rgba(251,146,60,0.2); color: #fdba74; border: 1px solid rgba(251,146,60,0.3); }
-
-        .theme-emp { border-left: 4px solid var(--c-emp); }
-        .theme-emp::before { content: '\f521'; color: var(--c-emp); }
-        .theme-emp .ec-year { color: #fde047; } .theme-emp .ec-tag { background: rgba(250,204,21,0.2); color: #fde047; border: 1px solid rgba(250,204,21,0.3); }
-
-        .theme-gen { border-left: 4px solid var(--text-muted); }
-        .theme-gen::before { content: '\f0ac'; color: var(--text-muted); }
-        .theme-gen .ec-tag { background: rgba(148,163,184,0.2); color: #e2e8f0; border: 1px solid rgba(148,163,184,0.3); }
-
-        /* Tatil Uyarısı & Inputlar */
-        .holiday-alert { padding: 15px; margin-bottom: 20px; border-radius: 16px; display: flex; align-items: center; gap: 15px; font-weight: 700; font-size: 0.95rem; animation: fadeIn 0.5s; }
-        .ha-off { background: linear-gradient(90deg, rgba(239,68,68,0.15), rgba(239,68,68,0.05)); color: #fca5a5; border-left: 4px solid var(--c-war); border: 1px solid rgba(239,68,68,0.2); }
-        .ha-rel { background: linear-gradient(90deg, rgba(168,85,247,0.15), rgba(168,85,247,0.05)); color: #e9d5ff; border-left: 4px solid #a855f7; border: 1px solid rgba(168,85,247,0.2); }
-        
+        /* ─── DATE PICKER ─── */
         .date-picker { display: none; gap: 5px; margin-bottom: 15px; justify-content: center; }
-        .date-picker.active { display: flex; animation: fadeIn 0.3s; }
-        .dp-input { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: white; padding: 8px; border-radius: 8px; text-align: center; font-family: 'Nunito', sans-serif; font-weight: 600; outline: none; }
-        .dp-input:focus { border-color: var(--accent); }
-        .dp-btn { background: var(--accent); border: none; padding: 8px 15px; border-radius: 8px; font-weight: 800; cursor: pointer; color: #000; font-family: 'Nunito', sans-serif; transition: 0.2s; }
-        .dp-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(56, 189, 248, 0.4); }
+        .date-picker.active { display: flex; animation: fadeUp 0.3s; }
+        .dp-input {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 7px 10px;
+            border-radius: 8px;
+            font-family: 'Crimson Pro', serif;
+            font-size: 0.95rem;
+            outline: none;
+        }
+        .dp-input:focus { border-color: rgba(201,169,110,0.4); }
+        .dp-btn {
+            background: var(--accent);
+            border: none;
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+            color: #1a1200;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: 0.2s;
+        }
+        .dp-btn:hover { filter: brightness(1.1); }
 
-        /* =========================================================
-           ÖNİZLEME MODALI & YENİ RENK SEÇİCİ PALET
-           ========================================================= */
-        #previewModal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            display: none; justify-content: center; align-items: center; z-index: 9998; padding: 20px;
+        /* ─── DATE HERO ─── */
+        .date-hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 16px;
         }
-        .modal-content {
-            background: var(--bg-dark); border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 28px; padding: 25px; width: 100%; max-width: 440px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8); position: relative;
-            max-height: 95vh; overflow-y: auto;
+        .hero-num {
+            font-family: 'Nunito', sans-serif;
+            font-size: 5.5rem;
+            font-weight: 900;
+            line-height: 0.85;
+            color: var(--accent);
+            letter-spacing: -2px;
         }
-        .close-modal {
-            position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1); color: white; width: 34px; height: 34px; border-radius: 50%;
-            cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; z-index: 10; font-family: 'Nunito', sans-serif; transition: 0.2s;
+        .hero-full {
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--muted);
+            margin-top: 8px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
         }
-        .close-modal:hover { background: rgba(255,255,255,0.2); transform: rotate(90deg); }
-        
-        .preview-box {
-            width: 100%; background: #0b1120; border-radius: 20px; 
-            overflow: hidden; position: relative; margin-bottom: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-            transition: height 0.3s ease, background-color 0.3s ease; 
-            border: 1px solid rgba(255,255,255,0.05);
+        .badges-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 14px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
-        
-        #previewCloneWrapper {
-            position: absolute; top: 0; left: 0; 
-            width: 1080px; min-height: 1080px; height: max-content; 
-            transform-origin: top left; pointer-events: none;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            padding: 80px 90px; box-sizing: border-box;
+        .info-badge {
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            padding: 5px 10px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border: 1px solid;
         }
+        .ib-hijri  { background: rgba(74,190,158,0.08); color: var(--sci); border-color: rgba(74,190,158,0.2); }
+        .ib-count  { background: rgba(224,192,64,0.08); color: var(--emp); border-color: rgba(224,192,64,0.2); }
+        .ib-season { background: rgba(201,169,110,0.08); color: var(--accent); border-color: rgba(201,169,110,0.2); }
+        .ib-moon   { background: rgba(160,125,224,0.08); color: var(--art); border-color: rgba(160,125,224,0.2); }
 
-        /* Yeni Renk Paleti Tasarımı */
-        .color-picker-container {
-            display: flex; flex-direction: column; align-items: center; gap: 15px; margin-bottom: 20px;
-        }
-        .color-picker-title {
-            font-size: 1rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
-        }
-        .color-swatches {
-            display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
-        }
-        .color-swatch {
-            width: 42px; height: 42px; border-radius: 50%; cursor: pointer;
-            border: 3px solid transparent; transition: all 0.2s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-        .color-swatch:hover { transform: scale(1.1); }
-        .color-swatch.active { border-color: white; transform: scale(1.1); box-shadow: 0 0 15px rgba(255,255,255,0.4); }
-
-        /* =========================================================
-           GİZLİ PAYLAŞIM KARTI (POSTER) - SAYDAM KUTU FIX (KÖŞELER)
-           ========================================================= */
-        #exportCanvasArea {
-            position: fixed; top: -9999px; left: -9999px; 
-            width: 1080px; min-height: 1080px; height: max-content; 
-            background-color: #0b1120; 
-            display: flex; flex-direction: column; justify-content: flex-start; align-items: center;
-            padding: 100px 90px 80px 90px; box-sizing: border-box; z-index: -1;
-            font-family: 'Nunito', sans-serif; color: white;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 2px, transparent 2px);
-            background-size: 35px 35px;
-        }
-
-        /* Logo Sol Üstte */
-        .export-logo-top-left {
-            position: absolute; top: 60px; left: 60px; width: 120px; height: 120px;
-            object-fit: cover; border-radius: 28px; box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            z-index: 10;
-        }
-        
-        .export-header { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 40px; width: 100%; z-index: 2;}
-        
-        .export-date { 
-            font-size: 1.8rem; font-weight: 700; color: #cbd5e1; 
-            text-transform: uppercase; letter-spacing: 12px;
-        }
-
-        .export-top-title { 
-            font-family: 'Nunito', sans-serif; 
-            font-size: 4rem; 
-            color: #ffffff; 
-            font-weight: 900; 
-            letter-spacing: 16px; 
-            text-shadow: 0 8px 25px rgba(255,255,255,0.2), 0 5px 15px rgba(0,0,0,0.8); 
-            z-index: 2;
-        }
-
-        #exportCardsContainer { width: 100%; display: flex; flex-direction: column; z-index: 2;}
-
-        /* HATA FIX: Kenarlık/Saydam Kutu çözümü için sağlamlaştırıldı */
-        .export-card {
-            border-radius: 32px; 
-            width: 100%; position: relative;
-            display: flex; flex-direction: column; overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.08); /* İç gölge yerine ince güvenli kenarlık kondu */
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5); 
-            background-color: #0f172a; /* Saydamlık yırtılmalarına karşı sağlam arka plan konuldu */
-        }
-        
-        /* Kenar rengi için border yerine içeride element kullanıldı */
-        .exp-strip {
-            position: absolute; top: 0; left: 0; bottom: 0; width: 16px; z-index: 1;
-        }
-
-        /* Gradyanlar saydamlık bırakmayacak (rgba... -> %100 tam rgb geçişi) şekilde uyarlandı */
-        .exp-theme-war { background-image: linear-gradient(145deg, rgba(185,28,28,0.4) 0%, rgba(15,23,42,1) 60%); }
-        .exp-theme-war .exp-strip { background-color: var(--c-war); }
-        
-        .exp-theme-sci { background-image: linear-gradient(145deg, rgba(6,78,59,0.4) 0%, rgba(15,23,42,1) 60%); }
-        .exp-theme-sci .exp-strip { background-color: var(--c-sci); }
-        
-        .exp-theme-lit { background-image: linear-gradient(145deg, rgba(131,24,67,0.4) 0%, rgba(15,23,42,1) 60%); }
-        .exp-theme-lit .exp-strip { background-color: var(--c-lit); }
-        
-        .exp-theme-art { background-image: linear-gradient(145deg, rgba(88,28,135,0.4) 0%, rgba(15,23,42,1) 60%); }
-        .exp-theme-art .exp-strip { background-color: var(--c-art); }
-        
-        .exp-theme-dis { background-image: linear-gradient(145deg, rgba(154,52,18,0.4) 0%, rgba(15,23,42,1) 60%); }
-        .exp-theme-dis .exp-strip { background-color: var(--c-dis); }
-        
-        .exp-theme-emp { background-image: linear-gradient(145deg, rgba(133,77,14,0.4) 0%, rgba(15,23,42,1) 60%); }
-        .exp-theme-emp .exp-strip { background-color: var(--c-emp); }
-        
-        .exp-theme-gen { background-image: linear-gradient(145deg, rgba(51,65,85,0.4) 0%, rgba(15,23,42,1) 60%); }
-        .exp-theme-gen .exp-strip { background-color: var(--text-muted); }
-
-        .exp-quote-icon { position: absolute; opacity: 0.08; pointer-events: none; color: #ffffff !important; transform: rotate(-10deg); }
-        .export-meta { display: flex; align-items: center; position: relative; z-index: 2; border-bottom: 2px solid rgba(255,255,255,0.1); }
-        .export-year { font-family: 'Nunito', sans-serif; font-weight: 900; color: #ffffff; line-height: 1; text-shadow: 0 10px 30px rgba(0,0,0,0.6); }
-        .export-tag { border-radius: 16px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; color: #111827; box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
-        .export-text { line-height: 1.5; color: #f8fafc; font-weight: 600; position: relative; z-index: 2; text-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-
-        /* Uygulama Adı En Altta */
-        .export-footer-name {
-            margin-top: auto; padding-top: 60px;
-            font-family: 'Nunito', sans-serif; font-size: 3.8rem; font-weight: 900; 
-            color: #ffffff; letter-spacing: 10px; text-transform: uppercase;
-            text-shadow: 0 10px 20px rgba(0,0,0,0.5); text-align: center; z-index: 2;
-        }
-
-        #loadingOverlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
-            display: none; justify-content: center; align-items: center; z-index: 9999; flex-direction: column; gap: 20px; color: white;
+        /* ─── QUOTE ─── */
+        .daily-quote {
+            font-style: italic;
+            font-size: 1rem;
+            color: rgba(240,234,214,0.55);
+            margin-bottom: 18px;
+            padding: 12px 16px;
+            border-left: 2px solid rgba(201,169,110,0.3);
+            background: rgba(201,169,110,0.03);
+            border-radius: 0 8px 8px 0;
+            line-height: 1.5;
             font-family: 'Nunito', sans-serif;
         }
 
-        @keyframes fadeIn { from{opacity:0; transform:translateY(5px)} to{opacity:1; transform:translateY(0)} }
-        @media (max-width: 380px) { .hero-num { font-size: 4rem; } }
+        /* ─── HOLIDAY ALERT ─── */
+        .holiday-alert {
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 400;
+            font-size: 0.88rem;
+            letter-spacing: 1px;
+        }
+        .ha-off { background: rgba(224,92,92,0.08); color: #f0a0a0; border: 1px solid rgba(224,92,92,0.2); }
+        .ha-rel { background: rgba(160,125,224,0.08); color: #c8b0f0; border: 1px solid rgba(160,125,224,0.2); }
+
+        /* ─── SECTION TITLE & FILTERS ─── */
+        .section-title {
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 10px;
+            font-weight: 400;
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .filter-row {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            scrollbar-width: none;
+        }
+        .filter-row::-webkit-scrollbar { display:none; }
+        .filter-btn {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 400;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+        .filter-btn.active {
+            background: var(--accent);
+            color: #1a1200;
+            border-color: transparent;
+            font-weight: 600;
+        }
+
+        /* ─── EVENT CARDS ─── */
+        .events-list {
+            max-height: 580px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        /* ─── EVENT CARDS — KART TASARIMI ─── */
+        .events-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding-right: 2px;
+        }
+        .event-card {
+            position: relative;
+            padding: 0;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.25s, box-shadow 0.25s;
+            border: 1px solid rgba(255,255,255,0.07);
+            background: rgba(255,255,255,0.03);
+            opacity: 0;
+            animation: fadeUp 0.4s ease forwards;
+            display: flex;
+            flex-direction: column;
+            min-height: 130px;
+        }
+        @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+        .event-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.35); }
+
+        /* Kart üst şerit — renkli arka plan */
+        .ec-top {
+            padding: 11px 13px 9px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .ec-top-left { display: flex; flex-direction: column; gap: 5px; }
+        .ec-year {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 900;
+            font-size: 1.6rem;
+            line-height: 1;
+            letter-spacing: -0.5px;
+        }
+        .ec-tag {
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.58rem;
+            font-weight: 800;
+            padding: 3px 7px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.85);
+            border: none;
+            width: fit-content;
+        }
+        .ec-actions { display: flex; gap: 4px; align-items: flex-start; }
+        .share-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: rgba(255,255,255,0.6);
+            width: 26px; height: 26px;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+        .share-btn:hover { background: rgba(255,255,255,0.22); color: #fff; }
+
+        /* Kart alt metin alanı */
+        .ec-body {
+            padding: 10px 13px 12px;
+            flex: 1;
+            display: flex;
+            align-items: flex-start;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        .ec-text {
+            font-size: 0.82rem;
+            font-weight: 500;
+            line-height: 1.5;
+            color: rgba(240,234,214,0.82);
+            font-family: 'Nunito', sans-serif;
+        }
+
+        /* CHECKBOX */
+        .custom-checkbox {
+            appearance: none; -webkit-appearance: none;
+            width: 18px; height: 18px; margin: 0;
+            border: 1.5px solid rgba(255,255,255,0.3);
+            border-radius: 5px;
+            background: rgba(0,0,0,0.2);
+            cursor: pointer;
+            position: relative;
+            transition: 0.2s;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .custom-checkbox:checked { background: var(--accent); border-color: var(--accent); }
+        .custom-checkbox:checked::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: #1a1200;
+            font-size: 10px;
+            position: absolute;
+        }
+        .selection-mode .custom-checkbox { display: flex; }
+        .selection-mode .share-btn { display: none; }
+
+        /* ─── TEMA RENKLERİ — kart üst alan ─── */
+        .theme-war  .ec-top { background: linear-gradient(135deg, rgba(180,40,40,0.35) 0%, rgba(120,20,20,0.2) 100%); }
+        .theme-war  .ec-year { color: #ffaaaa; }
+
+        .theme-sci  .ec-top { background: linear-gradient(135deg, rgba(30,140,110,0.35) 0%, rgba(10,90,70,0.2) 100%); }
+        .theme-sci  .ec-year { color: #88e8cc; }
+
+        .theme-lit  .ec-top { background: linear-gradient(135deg, rgba(180,60,120,0.35) 0%, rgba(120,20,80,0.2) 100%); }
+        .theme-lit  .ec-year { color: #f8b0d8; }
+
+        .theme-art  .ec-top { background: linear-gradient(135deg, rgba(100,50,200,0.35) 0%, rgba(60,20,140,0.2) 100%); }
+        .theme-art  .ec-year { color: #ccc0ff; }
+
+        .theme-dis  .ec-top { background: linear-gradient(135deg, rgba(200,100,20,0.35) 0%, rgba(140,60,10,0.2) 100%); }
+        .theme-dis  .ec-year { color: #ffbb80; }
+
+        .theme-emp  .ec-top { background: linear-gradient(135deg, rgba(180,150,20,0.35) 0%, rgba(120,100,10,0.2) 100%); }
+        .theme-emp  .ec-year { color: #ffe080; }
+
+        .theme-gen  .ec-top { background: linear-gradient(135deg, rgba(80,80,100,0.25) 0%, rgba(40,40,60,0.15) 100%); }
+        .theme-gen  .ec-year { color: rgba(240,234,214,0.7); }
+
+        /* ─── MODAL ─── */
+        #previewModal {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9998;
+            padding: 20px;
+        }
+        .modal-content {
+            background: #0d0f1a;
+            border: 1px solid rgba(201,169,110,0.2);
+            border-radius: 24px;
+            padding: 24px;
+            width: 100%;
+            max-width: 440px;
+            max-height: 95vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .close-modal {
+            position: absolute; top:14px; right:14px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.2s;
+        }
+        .close-modal:hover { background: rgba(255,255,255,0.12); color: var(--text); transform: rotate(90deg); }
+        .preview-box {
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 20px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+            transition: height 0.3s ease, background-color 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        #previewCloneWrapper {
+            position: absolute; top:0; left:0;
+            width: 1080px; min-height: 1080px; max-height: 1350px; height: max-content;
+            transform-origin: top left;
+            pointer-events: none;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 80px 90px;
+            box-sizing: border-box;
+        }
+        
+        /* ─── COLOR PICKER ─── */
+        .color-picker-container {
+            display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 18px;
+        }
+        .color-picker-title {
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.72rem;
+            color: var(--muted);
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .color-swatches {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+        }
+        .color-swatch {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: 0.2s;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+        }
+        .color-swatch:hover { transform: scale(1.1); }
+        .color-swatch.active { border-color: var(--accent); transform: scale(1.12); }
+
+        /* ─── LOADING ─── */
+        #loadingOverlay {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(12px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;
+            gap: 16px;
+            color: var(--text);
+            font-family: 'Nunito', sans-serif;
+        }
+
+        /* ═══════════════════════════════════════════════════
+           EXPORT CANVAS — GAZETE POSTERİ
+           ═══════════════════════════════════════════════════ */
+        #exportCanvasArea {
+            position: fixed; top:-9999px; left:-9999px;
+            width: 1080px; height: auto;
+            min-height: 1080px; max-height: 1350px;
+            background-color: #f4edd8;
+            background-image: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: stretch;
+            padding: 0;
+            box-sizing: border-box;
+            z-index: -1;
+            overflow: hidden;
+            font-family: 'Times New Roman', Times, serif;
+            color: #1c1710;
+        }
+
+        /* Kağıt doku — çizgiler + nokta desen */
+        #exportCanvasArea::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 34px, rgba(100,70,20,0.04) 34px, rgba(100,70,20,0.04) 35px),
+                repeating-linear-gradient(90deg, transparent, transparent 34px, rgba(100,70,20,0.02) 34px, rgba(100,70,20,0.02) 35px),
+                radial-gradient(rgba(100,70,20,0.07) 1px, transparent 1px);
+            background-size: 100% 35px, 35px 100%, 5px 5px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Dış çerçeve — kalın + ince çift çizgi (gerçek gazete stili) */
+        #exportCanvasArea::after {
+            content: "";
+            position: absolute;
+            inset: 18px;
+            border: 2.5px solid rgba(28,23,16,0.7);
+            box-shadow: inset 0 0 0 5px rgba(28,23,16,0.0), inset 4px 4px 0 4px transparent;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .exp-inner-border {
+            position: absolute;
+            inset: 24px;
+            border: 0.8px solid rgba(28,23,16,0.3);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* İkinci iç çerçeve — üçlü çizgi efekti */
+        .exp-inner-border2 {
+            position: absolute;
+            inset: 30px;
+            border: 0.4px solid rgba(28,23,16,0.18);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* ─── MASTHEAD ─── */
+        .exp-masthead {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 48px 90px 0;
+        }
+
+        /* Masthead üstü — yayın numarası çizgisi */
+        .exp-pub-line {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 0.7rem;
+            color: rgba(28,23,16,0.5);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            border-bottom: 0.8px solid rgba(28,23,16,0.3);
+            padding-bottom: 8px;
+        }
+
+        .exp-main-title {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 5.8rem;
+            font-weight: 900;
+            line-height: 0.95;
+            letter-spacing: 10px;
+            text-align: center;
+            color: #1c1710;
+            margin: 0 0 6px;
+            white-space: nowrap;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.1);
+        }
+
+        /* Başlık alt dekorasyon çizgisi */
+        .exp-title-deco {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .exp-title-deco-line {
+            flex: 1;
+            height: 1px;
+            background: rgba(28,23,16,0.35);
+        }
+        .exp-title-deco-text {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 0.65rem;
+            letter-spacing: 5px;
+            color: rgba(28,23,16,0.45);
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .exp-date-line {
+            font-family: 'Times New Roman', Times, serif;
+            font-style: italic;
+            font-size: 1.65rem;
+            letter-spacing: 6px;
+            color: rgba(28,23,16,0.85);
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .exp-divider-thick {
+            width: 100%;
+            height: 3px;
+            background: #1c1710;
+            margin-bottom: 2px;
+        }
+        .exp-divider-thin {
+            width: 100%;
+            height: 0.8px;
+            background: rgba(28,23,16,0.5);
+        }
+
+        /* ─── CARDS CONTAINER ─── */
+        #exportCardsContainer {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+            padding: 0 80px;
+        }
+
+        /* ─── EXPORT CARD (Liste modu base) ─── */
+        .export-card {
+            width: 100%;
+            position: relative;
+            display: grid;
+            grid-template-columns: 210px 1fr;
+            align-items: stretch;
+            border-bottom: 1px solid rgba(28,23,16,0.18);
+            padding: 28px 0;
+            gap: 0;
+            background: transparent !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+            border-top: none !important;
+            border-left: none !important;
+            border-right: none !important;
+        }
+        .export-card:last-child { border-bottom: none; }
+
+        /* Sol renk çizgisi */
+        .exp-strip {
+            position: absolute;
+            left: 0; top: 10px; bottom: 10px;
+            width: 4px;
+            border-radius: 2px;
+        }
+        .exp-theme-war .exp-strip   { background: linear-gradient(to bottom, #8b1c1c, #c0392b); }
+        .exp-theme-sci .exp-strip   { background: linear-gradient(to bottom, #1a6647, #27ae60); }
+        .exp-theme-lit .exp-strip   { background: linear-gradient(to bottom, #7a1f52, #9b2277); }
+        .exp-theme-art .exp-strip   { background: linear-gradient(to bottom, #3e1d72, #5d2d9e); }
+        .exp-theme-dis .exp-strip   { background: linear-gradient(to bottom, #8b4010, #c0580e); }
+        .exp-theme-emp .exp-strip   { background: linear-gradient(to bottom, #7a5c10, #a07d18); }
+        .exp-theme-gen .exp-strip   { background: linear-gradient(to bottom, #555, #888); }
+
+        .export-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 8px;
+            padding-left: 20px;
+            padding-right: 22px;
+            border-right: 1px solid rgba(28,23,16,0.18);
+        }
+        .export-year {
+            font-family: 'Times New Roman', Times, serif;
+            font-weight: 700;
+            color: #1c1710;
+            line-height: 1;
+            font-size: 3.6rem !important;
+            letter-spacing: -1px;
+        }
+        .export-tag {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 0.78rem !important;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #f5ead0 !important;
+            background-color: #5c3d1e !important;
+            padding: 5px 14px !important;
+            border-radius: 3px;
+        }
+        .export-text {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.45rem !important;
+            line-height: 1.55;
+            color: #1c1710;
+            font-weight: 400;
+            align-self: center;
+            padding-left: 26px;
+            padding-right: 12px;
+        }
+
+        /* TEK OLAY — büyük manşet */
+        .export-card.single-mode {
+            grid-template-columns: 1fr;
+            padding: 40px 0 !important;
+            text-align: center;
+        }
+        .export-card.single-mode .export-meta {
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            border-right: none;
+            padding: 0 0 20px 0;
+            gap: 20px;
+        }
+        .export-card.single-mode .export-year { font-size: 7rem !important; }
+        .export-card.single-mode .export-tag  { font-size: 1rem !important; padding: 7px 20px !important; }
+        .export-card.single-mode .export-text {
+            font-size: 2.1rem !important;
+            text-align: center;
+            padding: 0 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* LİSTE MODU — kompakt satırlar */
+        #exportCanvasArea.list-mode .export-card,
+        #previewCloneWrapper.list-mode .export-card {
+            grid-template-columns: 160px 1fr;
+            padding: 20px 0 !important;
+            border-bottom: 1px solid rgba(28,23,16,0.18);
+        }
+        #exportCanvasArea.list-mode .export-year,
+        #previewCloneWrapper.list-mode .export-year { font-size: 3.2rem !important; }
+        #exportCanvasArea.list-mode .export-tag,
+        #previewCloneWrapper.list-mode .export-tag  { font-size: 0.82rem !important; padding: 5px 12px !important; }
+        #exportCanvasArea.list-mode .export-text,
+        #previewCloneWrapper.list-mode .export-text { font-size: 1.42rem !important; padding-left: 22px; line-height: 1.58; }
+        #exportCanvasArea.list-mode .export-meta,
+        #previewCloneWrapper.list-mode .export-meta { padding-left: 16px; padding-right: 16px; }
+        #exportCanvasArea.list-mode #exportCardsContainer,
+        #previewCloneWrapper.list-mode #exportCardsContainer { padding: 0 70px; }
+        /* Liste modunda tema renkli sol kenar */
+        #exportCanvasArea.list-mode .exp-theme-war,
+        #previewCloneWrapper.list-mode .exp-theme-war { border-left: 5px solid #8b1c1c !important; padding-left: 5px; }
+        #exportCanvasArea.list-mode .exp-theme-sci,
+        #previewCloneWrapper.list-mode .exp-theme-sci { border-left: 5px solid #1a6647 !important; padding-left: 5px; }
+        #exportCanvasArea.list-mode .exp-theme-lit,
+        #previewCloneWrapper.list-mode .exp-theme-lit { border-left: 5px solid #7a1f52 !important; padding-left: 5px; }
+        #exportCanvasArea.list-mode .exp-theme-art,
+        #previewCloneWrapper.list-mode .exp-theme-art { border-left: 5px solid #3e1d72 !important; padding-left: 5px; }
+        #exportCanvasArea.list-mode .exp-theme-dis,
+        #previewCloneWrapper.list-mode .exp-theme-dis { border-left: 5px solid #8b4010 !important; padding-left: 5px; }
+        #exportCanvasArea.list-mode .exp-theme-emp,
+        #previewCloneWrapper.list-mode .exp-theme-emp { border-left: 5px solid #7a5c10 !important; padding-left: 5px; }
+        #exportCanvasArea.list-mode .exp-theme-gen,
+        #previewCloneWrapper.list-mode .exp-theme-gen { border-left: 5px solid #888 !important; padding-left: 5px; }
+        /* Liste modu yıl renkleri */
+        #exportCanvasArea.list-mode .exp-theme-war .export-year,
+        #previewCloneWrapper.list-mode .exp-theme-war .export-year { color: #8b1c1c; }
+        #exportCanvasArea.list-mode .exp-theme-sci .export-year,
+        #previewCloneWrapper.list-mode .exp-theme-sci .export-year { color: #1a6647; }
+        #exportCanvasArea.list-mode .exp-theme-lit .export-year,
+        #previewCloneWrapper.list-mode .exp-theme-lit .export-year { color: #7a1f52; }
+        #exportCanvasArea.list-mode .exp-theme-art .export-year,
+        #previewCloneWrapper.list-mode .exp-theme-art .export-year { color: #3e1d72; }
+        #exportCanvasArea.list-mode .exp-theme-dis .export-year,
+        #previewCloneWrapper.list-mode .exp-theme-dis .export-year { color: #8b4010; }
+        #exportCanvasArea.list-mode .exp-theme-emp .export-year,
+        #previewCloneWrapper.list-mode .exp-theme-emp .export-year { color: #7a5c10; }
+
+        /* KART MODU — 4 sütun ızgara kartlar */
+        #exportCanvasArea.card-mode #exportCardsContainer,
+        #previewCloneWrapper.card-mode #exportCardsContainer {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 14px;
+            padding: 10px 50px 0 !important;
+            flex: 1;
+            align-content: start;
+        }
+        #exportCanvasArea.card-mode .export-card,
+        #previewCloneWrapper.card-mode .export-card {
+            display: flex !important;
+            flex-direction: column;
+            grid-template-columns: unset !important;
+            border-bottom: none !important;
+            border-radius: 10px !important;
+            overflow: hidden;
+            padding: 0 !important;
+            min-height: 160px;
+            border: 1px solid rgba(28,23,16,0.12) !important;
+            background: rgba(255,255,255,0.3) !important;
+        }
+        #exportCanvasArea.card-mode .exp-strip,
+        #previewCloneWrapper.card-mode .exp-strip { display: none; }
+        #exportCanvasArea.card-mode .export-meta,
+        #previewCloneWrapper.card-mode .export-meta {
+            border-right: none;
+            border-bottom: 1px solid rgba(28,23,16,0.2);
+            padding: 12px 14px !important;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        #exportCanvasArea.card-mode .export-year,
+        #previewCloneWrapper.card-mode .export-year { font-size: 2.6rem !important; line-height: 1; flex-shrink: 0; }
+        #exportCanvasArea.card-mode .export-tag,
+        #previewCloneWrapper.card-mode .export-tag  { font-size: 0.76rem !important; padding: 5px 11px !important; text-align: right; letter-spacing: 1.5px; }
+        #exportCanvasArea.card-mode .export-text,
+        #previewCloneWrapper.card-mode .export-text {
+            font-size: 1.22rem !important;
+            line-height: 1.62;
+            padding: 16px 18px !important;
+            align-self: stretch;
+            flex: 1;
+            background: rgba(255,255,255,0.45);
+        }
+        /* Kart modu üst alan renkleri — hafif, kağıt uyumlu */
+        #exportCanvasArea.card-mode .exp-theme-war .export-meta,
+        #previewCloneWrapper.card-mode .exp-theme-war .export-meta { background: rgba(139,28,28,0.05); }
+        #exportCanvasArea.card-mode .exp-theme-sci .export-meta,
+        #previewCloneWrapper.card-mode .exp-theme-sci .export-meta { background: rgba(26,102,71,0.05); }
+        #exportCanvasArea.card-mode .exp-theme-lit .export-meta,
+        #previewCloneWrapper.card-mode .exp-theme-lit .export-meta { background: rgba(122,31,82,0.05); }
+        #exportCanvasArea.card-mode .exp-theme-art .export-meta,
+        #previewCloneWrapper.card-mode .exp-theme-art .export-meta { background: rgba(62,29,114,0.05); }
+        #exportCanvasArea.card-mode .exp-theme-dis .export-meta,
+        #previewCloneWrapper.card-mode .exp-theme-dis .export-meta { background: rgba(139,64,16,0.05); }
+        #exportCanvasArea.card-mode .exp-theme-emp .export-meta,
+        #previewCloneWrapper.card-mode .exp-theme-emp .export-meta { background: rgba(122,92,16,0.05); }
+        /* Kart modu yıl renkleri */
+        #exportCanvasArea.card-mode .exp-theme-war .export-year,
+        #previewCloneWrapper.card-mode .exp-theme-war .export-year { color: #8b1c1c; }
+        #exportCanvasArea.card-mode .exp-theme-sci .export-year,
+        #previewCloneWrapper.card-mode .exp-theme-sci .export-year { color: #1a6647; }
+        #exportCanvasArea.card-mode .exp-theme-lit .export-year,
+        #previewCloneWrapper.card-mode .exp-theme-lit .export-year { color: #7a1f52; }
+        #exportCanvasArea.card-mode .exp-theme-art .export-year,
+        #previewCloneWrapper.card-mode .exp-theme-art .export-year { color: #3e1d72; }
+        #exportCanvasArea.card-mode .exp-theme-dis .export-year,
+        #previewCloneWrapper.card-mode .exp-theme-dis .export-year { color: #8b4010; }
+        #exportCanvasArea.card-mode .exp-theme-emp .export-year,
+        #previewCloneWrapper.card-mode .exp-theme-emp .export-year { color: #7a5c10; }
+        /* Sol şerit kart modunda sol kenar olarak */
+        #exportCanvasArea.card-mode .exp-theme-war,
+        #previewCloneWrapper.card-mode .exp-theme-war { border-left: 4px solid #8b1c1c !important; }
+        #exportCanvasArea.card-mode .exp-theme-sci,
+        #previewCloneWrapper.card-mode .exp-theme-sci { border-left: 4px solid #1a6647 !important; }
+        #exportCanvasArea.card-mode .exp-theme-lit,
+        #previewCloneWrapper.card-mode .exp-theme-lit { border-left: 4px solid #7a1f52 !important; }
+        #exportCanvasArea.card-mode .exp-theme-art,
+        #previewCloneWrapper.card-mode .exp-theme-art { border-left: 4px solid #3e1d72 !important; }
+        #exportCanvasArea.card-mode .exp-theme-dis,
+        #previewCloneWrapper.card-mode .exp-theme-dis { border-left: 4px solid #8b4010 !important; }
+        #exportCanvasArea.card-mode .exp-theme-emp,
+        #previewCloneWrapper.card-mode .exp-theme-emp { border-left: 4px solid #7a5c10 !important; }
+        #exportCanvasArea.card-mode .exp-theme-gen,
+        #previewCloneWrapper.card-mode .exp-theme-gen { border-left: 4px solid #888 !important; }
+
+        /* ─── FOOTER ─── */
+        .exp-footer {
+            position: relative;
+            z-index: 2;
+            padding: 10px 90px 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .exp-footer-inner {
+            border-top: 4px double rgba(28,23,16,0.55);
+            padding-top: 14px;
+            width: 100%;
+            text-align: center;
+        }
+        .exp-footer-name {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: rgba(28,23,16,0.7);
+            letter-spacing: 12px;
+            text-transform: uppercase;
+        }
+        .exp-footer-name::before { content: "✦  "; font-size: 0.7rem; opacity: 0.5; }
+        .exp-footer-name::after  { content: "  ✦"; font-size: 0.7rem; opacity: 0.5; }
+
+        /* Logo */
+        .export-logo-top-left {
+            position: absolute; top: 38px; left: 44px;
+            width: 58px; height: 58px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 1.5px solid rgba(28,23,16,0.5);
+            z-index: 10;
+            background: #f4edd8;
+        }
+
+        .exp-cat-icon {
+            font-style: normal;
+            margin-right: 3px;
+            opacity: 0.9;
+        }
+
+        @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+        /* ─── THEME TOGGLE ─── */
+        .theme-toggle-btn {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: 0.25s;
+            font-size: 0.9rem;
+            position: absolute;
+            top: 10px; right: 0;
+        }
+        .theme-toggle-btn:hover { color: var(--accent); border-color: rgba(201,169,110,0.35); transform: rotate(20deg); }
+        :root.light-mode .theme-toggle-btn { background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.12); }
+
+        /* ─── EVENT COUNT BADGE ─── */
+        .event-count-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--accent);
+            color: #1a1200;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 0.65rem;
+            min-width: 20px; height: 20px;
+            border-radius: 10px;
+            padding: 0 6px;
+            letter-spacing: 0;
+            line-height: 1;
+        }
+
+        @media (max-width:380px) { .hero-num { font-size: 4rem; } }
     </style>
 </head>
 <body>
 
-<amp-auto-ads type="adsense" data-ad-client="ca-pub-1880946354382681"></amp-auto-ads>
-
-<!-- Yükleme Ekranı -->
+<!-- LOADING OVERLAY -->
 <div id="loadingOverlay">
-    <i class="fas fa-spinner fa-spin" style="font-size: 3.5rem; color: var(--accent);"></i>
-    <div style="font-weight: 800; font-size: 1.3rem; margin-top: 10px; letter-spacing: 1px;">Kart Hazırlanıyor...</div>
+    <i class="fas fa-spinner fa-spin" style="font-size:3rem; color:var(--accent);"></i>
+    <div style="font-family:'Nunito',sans-serif; font-weight:400; font-size:1.1rem; letter-spacing:3px; text-transform:uppercase; color:var(--muted);">Kart Hazırlanıyor</div>
 </div>
 
 <!-- ÖNİZLEME MODALI -->
@@ -436,59 +1131,95 @@
         </div>
 
         <div class="color-picker-container">
-            <div class="color-picker-title">Arka Plan Rengini Seç:</div>
+            <div style="display:flex;gap:6px;margin-bottom:8px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:4px;">
+                <button id="previewCardBtn" onclick="setPreviewMode('card')" style="flex:1;padding:7px 10px;border-radius:7px;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:var(--accent);color:#1a1200;transition:0.2s;">
+                    <i class="fas fa-id-card" style="margin-right:5px;"></i>Kart
+                </button>
+                <button id="previewListBtn" onclick="setPreviewMode('list')" style="flex:1;padding:7px 10px;border-radius:7px;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:transparent;color:var(--muted);transition:0.2s;">
+                    <i class="fas fa-list" style="margin-right:5px;"></i>Liste
+                </button>
+            </div>
+            <div class="color-picker-title">Arka Plan Rengi</div>
             <div class="color-swatches">
-                <div class="color-swatch active" style="background-color: #0b1120;" onclick="selectColor(this, '#0b1120')"></div>
-                <div class="color-swatch" style="background-color: #1e1b4b;" onclick="selectColor(this, '#1e1b4b')"></div>
-                <div class="color-swatch" style="background-color: #312e81;" onclick="selectColor(this, '#312e81')"></div>
-                <div class="color-swatch" style="background-color: #581c87;" onclick="selectColor(this, '#581c87')"></div>
-                <div class="color-swatch" style="background-color: #701a75;" onclick="selectColor(this, '#701a75')"></div>
-                <div class="color-swatch" style="background-color: #831843;" onclick="selectColor(this, '#831843')"></div>
-                <div class="color-swatch" style="background-color: #7f1d1d;" onclick="selectColor(this, '#7f1d1d')"></div>
-                
-                <div class="color-swatch" style="background-color: #1e3a8a;" onclick="selectColor(this, '#1e3a8a')"></div>
-                <div class="color-swatch" style="background-color: #0f766e;" onclick="selectColor(this, '#0f766e')"></div>
-                <div class="color-swatch" style="background-color: #b45309;" onclick="selectColor(this, '#b45309')"></div>
-                <div class="color-swatch" style="background-color: #4d7c0f;" onclick="selectColor(this, '#4d7c0f')"></div>
-                <div class="color-swatch" style="background-color: #064e3b;" onclick="selectColor(this, '#064e3b')"></div>
-                <div class="color-swatch" style="background-color: #3f3f46;" onclick="selectColor(this, '#3f3f46')"></div>
-                <div class="color-swatch" style="background-color: #111827;" onclick="selectColor(this, '#111827')"></div>
+                <div class="color-swatch active" style="background:#f4edd8" onclick="selectColor(this,'#f4edd8')"></div>
+                <div class="color-swatch" style="background:#f2e8cc" onclick="selectColor(this,'#f2e8cc')"></div>
+                <div class="color-swatch" style="background:#ece1c2" onclick="selectColor(this,'#ece1c2')"></div>
+                <div class="color-swatch" style="background:#e8d5b0" onclick="selectColor(this,'#e8d5b0')"></div>
+                <div class="color-swatch" style="background:#f7f2e4" onclick="selectColor(this,'#f7f2e4')"></div>
+                <div class="color-swatch" style="background:#faf5e8" onclick="selectColor(this,'#faf5e8')"></div>
+                <div class="color-swatch" style="background:#dfd0ac" onclick="selectColor(this,'#dfd0ac')"></div>
+                <div class="color-swatch" style="background:#e4dcc8" onclick="selectColor(this,'#e4dcc8')"></div>
+                <div class="color-swatch" style="background:#fff8ee" onclick="selectColor(this,'#fff8ee')"></div>
+                <div class="color-swatch" style="background:#d8ccb8" onclick="selectColor(this,'#d8ccb8')"></div>
             </div>
         </div>
 
-        <button class="dp-btn" style="width: 100%; padding: 14px; font-size: 1.15rem; margin-top: 5px; border-radius: 12px; background: var(--accent); color: black;" onclick="downloadCard()">
-            <i class="fas fa-download" style="margin-right: 5px;"></i> Resmi İndir
+        <button class="dp-btn" style="width:100%; padding:13px; font-size:1rem; border-radius:12px; letter-spacing:3px;" onclick="downloadCard()">
+            <i class="fas fa-download" style="margin-right:8px;"></i> RESMİ İNDİR
         </button>
     </div>
 </div>
 
-<!-- GİZLİ PAYLAŞIM KARTI (POSTER GÖVDESİ) -->
+<!-- GİZLİ EXPORT CANVAS -->
 <div id="exportCanvasArea">
-    <!-- Logo Sol Üstte -->
-    <img src="logo.png" class="export-logo-top-left" alt="Logo" onerror="this.style.display='none'">
-    
-    <div class="export-header">
-        <div class="export-date" id="expDate">21 OCAK 2026</div>
-        <div class="export-top-title">TARİHTE BUGÜN</div>
+    <div class="exp-inner-border"></div>
+    <div class="exp-inner-border2"></div>
+    <img src="logo.png" class="export-logo-top-left" alt="" onerror="this.style.display='none'">
+
+    <div class="exp-masthead">
+        <div class="exp-main-title">TARİHTE BUGÜN</div>
+        <div class="exp-title-deco">
+            <div class="exp-title-deco-line"></div>
+            <div class="exp-title-deco-text">Mugöl Takvim · Tarihî Arşiv</div>
+            <div class="exp-title-deco-line"></div>
+        </div>
+        <div class="exp-date-line" id="expDate">7 HAZİRAN 2026, PAZAR</div>
+        <div id="expInfoBadges" style="display:flex;gap:22px;justify-content:center;align-items:center;margin-bottom:18px;">
+            <div id="expSeasonBadge" style="display:flex;align-items:center;gap:7px;font-family:'Times New Roman',Times,serif;font-size:1.05rem;font-weight:700;letter-spacing:2.5px;color:rgba(28,23,16,0.8);text-transform:uppercase;"></div>
+            <div style="width:6px;height:6px;border-radius:50%;background:rgba(28,23,16,0.45);"></div>
+            <div id="expMoonBadge" style="display:flex;align-items:center;gap:7px;font-family:'Times New Roman',Times,serif;font-size:1.05rem;font-weight:700;letter-spacing:2.5px;color:rgba(28,23,16,0.8);text-transform:uppercase;"></div>
+            <div style="width:6px;height:6px;border-radius:50%;background:rgba(28,23,16,0.45);"></div>
+            <div id="expHijriBadge" style="display:flex;align-items:center;gap:7px;font-family:'Times New Roman',Times,serif;font-size:1.05rem;font-weight:700;letter-spacing:2.5px;color:rgba(28,23,16,0.8);text-transform:uppercase;"></div>
+        </div>
+        <div style="width:100%;display:flex;flex-direction:column;align-items:center;gap:4px;margin-bottom:0;">
+            <div style="width:100%;display:flex;align-items:center;gap:14px;">
+                <div style="flex:1;height:4px;background:#1c1710;"></div>
+                <span style="font-family:'Times New Roman',Times,serif;font-size:1.1rem;color:rgba(28,23,16,0.55);letter-spacing:6px;">✦ ✦ ✦</span>
+                <div style="flex:1;height:4px;background:#1c1710;"></div>
+            </div>
+            <div style="width:100%;height:1.2px;background:rgba(28,23,16,0.4);margin-top:3px;"></div>
+        </div>
     </div>
 
     <div id="exportCardsContainer"></div>
-    
-    <!-- İsim En Altta -->
-    <div class="export-footer-name">MuGöl Takvim</div>
+
+    <div class="exp-footer">
+        <div class="exp-footer-inner">
+            <div class="exp-footer-name">Mugöl Takvim</div>
+            <div style="font-family:'Times New Roman',Times,serif;font-size:0.78rem;letter-spacing:5px;color:rgba(28,23,16,0.4);margin-top:6px;text-transform:uppercase;">Tarihte Bugün · Arşiv Baskısı</div>
+        </div>
+    </div>
 </div>
 
-<!-- ANA UYGULAMA GÖVDESİ -->
+<!-- ANA UYGULAMA -->
 <div class="container">
-    <div class="app-header" style="display:flex;flex-direction:column;align-items:center;gap:10px;">
-        <div class="app-logo">MuGöl Takvim</div>
-        <a href="https://mugol-portal.github.io" class="portal-back-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>Portal</a>
+    <div class="app-header" style="position:relative;">
+        <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeToggleBtn" title="Tema Değiştir">
+            <i class="fas fa-moon" id="themeIcon"></i>
+        </button>
+        <div class="app-logo">MuGöl</div>
+        <div class="app-tagline">Tarihte Bugün Takvimi</div>
+        <a href="https://mugol-portal.github.io" class="portal-back-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px"><polyline points="15 18 9 12 15 6"/></svg>
+            PORTAL
+        </a>
     </div>
 
+    <!-- TAKVİM -->
     <div class="glass-box">
         <div class="cal-header">
             <button class="nav-btn" onclick="changeDate(-1)"><i class="fas fa-chevron-left"></i></button>
-            <div class="month-display" id="monthTxt" onclick="togglePicker()">Ocak 2026</div>
+            <div class="month-display" id="monthTxt" onclick="togglePicker()">Haziran 2026</div>
             <div class="nav-controls">
                 <button class="nav-btn" onclick="changeDate(1)"><i class="fas fa-chevron-right"></i></button>
                 <button class="nav-btn" onclick="resetToday()"><i class="fas fa-calendar-day"></i></button>
@@ -496,45 +1227,60 @@
         </div>
 
         <div class="date-picker" id="datePicker">
-            <input type="number" id="jumpYear" class="dp-input" style="width:75px" placeholder="Yıl">
-            <select id="jumpMonth" class="dp-input"><option value="0">Ocak</option><option value="1">Şubat</option><option value="2">Mart</option><option value="3">Nisan</option><option value="4">Mayıs</option><option value="5">Haziran</option><option value="6">Temmuz</option><option value="7">Ağustos</option><option value="8">Eylül</option><option value="9">Ekim</option><option value="10">Kasım</option><option value="11">Aralık</option></select>
+            <input type="number" id="jumpYear" class="dp-input" style="width:72px" placeholder="Yıl">
+            <select id="jumpMonth" class="dp-input">
+                <option value="0">Ocak</option><option value="1">Şubat</option>
+                <option value="2">Mart</option><option value="3">Nisan</option>
+                <option value="4">Mayıs</option><option value="5">Haziran</option>
+                <option value="6">Temmuz</option><option value="7">Ağustos</option>
+                <option value="8">Eylül</option><option value="9">Ekim</option>
+                <option value="10">Kasım</option><option value="11">Aralık</option>
+            </select>
             <button class="dp-btn" onclick="applyJump()">Git</button>
         </div>
 
         <div class="weekdays">
-            <div class="wd">Pzt</div><div class="wd">Sal</div><div class="wd">Çar</div><div class="wd">Per</div><div class="wd">Cum</div>
-            <div class="wd" style="color:var(--c-war)">Cmt</div><div class="wd" style="color:var(--c-war)">Paz</div>
+            <div class="wd">Pzt</div><div class="wd">Sal</div><div class="wd">Çar</div>
+            <div class="wd">Per</div><div class="wd">Cum</div>
+            <div class="wd" style="color:var(--war)">Cmt</div>
+            <div class="wd" style="color:var(--war)">Paz</div>
         </div>
         <div class="days-grid" id="calGrid"></div>
     </div>
 
+    <!-- TARİH DETAY -->
     <div class="glass-box">
         <div class="date-hero">
-            <div class="hero-num" id="dNum">21</div>
-            <div class="hero-full" id="dFull">21 OCAK 2026, ÇARŞAMBA</div>
-            
+            <div class="hero-num" id="dNum">7</div>
+            <div class="hero-full" id="dFull">7 HAZİRAN 2026, PAZAR</div>
             <div class="badges-row">
                 <div class="info-badge ib-hijri"><i class="fas fa-mosque"></i> <span id="hijriText">--</span></div>
                 <div class="info-badge ib-count" id="countDisplay"><i class="fas fa-hourglass-half"></i> <span id="countText">--</span></div>
-                <div class="info-badge ib-season"><i id="seasonIcon" class="fas fa-snowflake"></i> <span id="seasonText">--</span></div>
-                <div class="info-badge ib-moon"><i id="moonIcon" class="fas fa-circle"></i> <span id="moonText">--</span></div>
+                <div class="info-badge ib-season"><i id="seasonIcon" class="fas fa-sun"></i> <span id="seasonText">--</span></div>
+                <div class="info-badge ib-moon"><i id="moonIcon" class="fas fa-moon"></i> <span id="moonText">--</span></div>
             </div>
         </div>
 
-        <div class="daily-quote" id="dailyQuote">Hayatta en hakiki mürşit ilimdir, fendir.</div>
+        <div class="daily-quote" id="dailyQuote">Geçmişi hatırlamayanlar, onu bir kere daha yaşamak zorunda kalırlar.</div>
 
         <div id="holidayArea"></div>
 
         <div class="sec-title">
             <div class="section-title">
-                <span><i class="fas fa-history" style="color:var(--accent)"></i> TARİHTE BUGÜN</span>
-                <div style="display:flex; gap:8px;">
-                    <button id="multiDownloadBtn" onclick="toggleSelectionMode()" title="Çoklu Afiş Oluştur" style="background:rgba(56, 189, 248, 0.15); border:1px solid rgba(56, 189, 248, 0.3); color:var(--accent); cursor:pointer; font-size:0.9rem; padding: 6px 12px; border-radius: 8px; transition: 0.2s; font-weight:700;"><i class="fas fa-check-square"></i> Seç & İndir</button>
-                    <button id="cancelSelectionBtn" onclick="cancelSelectionMode()" title="İptal" style="display:none; background:rgba(248, 113, 113, 0.15); border:1px solid rgba(248, 113, 113, 0.3); color:var(--c-war); cursor:pointer; font-size:0.9rem; padding: 6px 12px; border-radius: 8px; transition: 0.2s; font-weight:700;"><i class="fas fa-times"></i></button>
-                    <button onclick="copyContent()" title="Tüm Listeyi Kopyala" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:white; cursor:pointer; font-size:0.9rem; padding: 6px 12px; border-radius: 8px; transition: 0.2s; font-weight:700;"><i class="far fa-copy"></i></button>
+                <span><i class="fas fa-scroll" style="color:var(--accent); margin-right:6px;"></i>TARİHTE BUGÜN <span class="event-count-badge" id="eventCountBadge">0</span></span>
+                <div style="display:flex; gap:6px;">
+                    <button id="multiDownloadBtn" onclick="toggleSelectionMode()" style="background:rgba(201,169,110,0.1); border:1px solid rgba(201,169,110,0.25); color:var(--accent); cursor:pointer; font-family:'Nunito',sans-serif; font-size:0.68rem; letter-spacing:1.5px; padding:5px 10px; border-radius:6px; transition:0.2s;">
+                        <i class="fas fa-check-square"></i> SEÇ & İNDİR
+                    </button>
+                    <button id="cancelSelectionBtn" onclick="cancelSelectionMode()" style="display:none; background:rgba(224,92,92,0.1); border:1px solid rgba(224,92,92,0.25); color:var(--war); cursor:pointer; font-family:'Nunito',sans-serif; font-size:0.68rem; padding:5px 10px; border-radius:6px; transition:0.2s;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button onclick="copyContent()" style="background:rgba(255,255,255,0.04); border:1px solid var(--border); color:var(--muted); cursor:pointer; font-size:0.78rem; padding:5px 10px; border-radius:6px; transition:0.2s;">
+                        <i class="far fa-copy"></i>
+                    </button>
                 </div>
             </div>
-            
+
             <div class="filter-row" id="filterRow">
                 <button class="filter-btn active" onclick="filterEvents('all')">Tümü</button>
                 <button class="filter-btn" onclick="filterEvents('empire')">Devlet</button>
@@ -542,17 +1288,18 @@
                 <button class="filter-btn" onclick="filterEvents('science')">Bilim</button>
                 <button class="filter-btn" onclick="filterEvents('art')">Sanat</button>
                 <button class="filter-btn" onclick="filterEvents('literature')">Edebiyat</button>
+                <button class="filter-btn" onclick="filterEvents('disaster')">Afet</button>
             </div>
         </div>
-        
+
         <div class="events-list" id="historyList"></div>
     </div>
 </div>
 
 <script>
-    const mNames = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
-    const dNames = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
-    
+    const mNames = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+    const dNames = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+
     const quotes = [
         "Geçmişi hatırlamayanlar, onu bir kere daha yaşamak zorunda kalırlar.",
         "Tarih, sadece geçmiş değil, aynı zamanda geleceğin haritasıdır.",
@@ -564,431 +1311,507 @@
     ];
 
     const keywords = {
-        war: ['savaş', 'muharebe', 'sefer', 'kuşatma', 'cephe', 'taarruz', 'işgal', 'fetih', 'ordu', 'çatışma'],
-        disaster: ['yangın', 'deprem', 'sel', 'kaza', 'patlama', 'felaket', 'salgın', 'vefat', 'öldü', 'suikast'],
-        treaty: ['antlaşma', 'anlaşma', 'barış', 'imza', 'mütareke'],
-        science: ['icat', 'keşif', 'bilim', 'uzay', 'teknoloji', 'kuruldu', 'ilk kez', 'nobel', 'patent'],
-        literature: ['kitap', 'roman', 'şiir', 'şair', 'yazar', 'edebiyat', 'dergi', 'yayınlandı', 'yazıldı'],
-        art: ['film', 'sanat', 'müze', 'ressam', 'eser', 'heykel', 'müzik', 'konser', 'sergi'],
-        empire: ['imparator', 'padişah', 'sultan', 'kral', 'cumhuriyet', 'devlet', 'başkan', 'kuruluş']
+        war:       ['savaş','muharebe','sefer','kuşatma','cephe','taarruz','işgal','fetih','ordu','çatışma'],
+        disaster:  ['yangın','deprem','sel','kaza','patlama','felaket','salgın','vefat','öldü','suikast'],
+        treaty:    ['antlaşma','anlaşma','barış','imza','mütareke'],
+        science:   ['icat','keşif','bilim','uzay','teknoloji','kuruldu','ilk kez','nobel','patent'],
+        literature:['kitap','roman','şiir','şair','yazar','edebiyat','dergi','yayınlandı','yazıldı'],
+        art:       ['film','sanat','müze','ressam','eser','heykel','müzik','konser','sergi'],
+        empire:    ['imparator','padişah','sultan','kral','cumhuriyet','devlet','başkan','kuruluş']
     };
 
     const fixedHolidays = {
-        '01-01': { n: 'Yılbaşı', t: 'official' }, '04-23': { n: 'Ulusal Egemenlik ve Çocuk Byr.', t: 'official' },
-        '05-01': { n: 'Emek ve Dayanışma Günü', t: 'official' }, '05-19': { n: 'Atatürk\'ü Anma, Gençlik ve Spor Byr.', t: 'official' },
-        '07-15': { n: 'Demokrasi ve Milli Birlik', t: 'official' }, '08-30': { n: 'Zafer Bayramı', t: 'official' },
-        '10-29': { n: 'Cumhuriyet Bayramı', t: 'official' }
+        '01-01':{n:'Yılbaşı',t:'official'},'04-23':{n:'Ulusal Egemenlik ve Çocuk Byr.',t:'official'},
+        '05-01':{n:'Emek ve Dayanışma Günü',t:'official'},'05-19':{n:'Atatürk\'ü Anma, Gençlik ve Spor Byr.',t:'official'},
+        '07-15':{n:'Demokrasi ve Milli Birlik',t:'official'},'08-30':{n:'Zafer Bayramı',t:'official'},
+        '10-29':{n:'Cumhuriyet Bayramı',t:'official'}
     };
     const variableHolidays2026 = {
-        '2026-03-20': { n: 'Ramazan 1. Gün', t: 'religious' }, '2026-03-21': { n: 'Ramazan 2. Gün', t: 'religious' },
-        '2026-03-22': { n: 'Ramazan 3. Gün', t: 'religious' }, '2026-05-27': { n: 'Kurban 1. Gün', t: 'religious' },
-        '2026-05-28': { n: 'Kurban 2. Gün', t: 'religious' }, '2026-05-29': { n: 'Kurban 3. Gün', t: 'religious' },
-        '2026-05-30': { n: 'Kurban 4. Gün', t: 'religious' }
+        '2026-03-20':{n:'Ramazan 1. Gün',t:'religious'},'2026-03-21':{n:'Ramazan 2. Gün',t:'religious'},
+        '2026-03-22':{n:'Ramazan 3. Gün',t:'religious'},'2026-05-27':{n:'Kurban 1. Gün',t:'religious'},
+        '2026-05-28':{n:'Kurban 2. Gün',t:'religious'},'2026-05-29':{n:'Kurban 3. Gün',t:'religious'},
+        '2026-05-30':{n:'Kurban 4. Gün',t:'religious'}
     };
 
     const offlineDB = {
+        '06-07': [
+            {y:769,  t:'FMU (French Mason Union) kuruldu.', c:'science'},
+            {y:1099, t:'Birinci Haçlı seferi: Haçlı ordusu Kudüs kalesi önüne geldi ve Kudüs Kuşatması başladı.', c:'war'},
+            {y:1494, t:'Dönemin deniz güçleri Portekiz ve İspanya, Tordesillas Antlaşması\'na vardı.', c:'empire'},
+            {y:1654, t:'XIV. Louis, Fransa Kralı oldu.', c:'empire'},
+            {y:1692, t:'Jamaika\'nın Port Royal kentinde deprem: 1600 kişi öldü, 3000 kişi ağır yaralandı.', c:'disaster'},
+            {y:1801, t:'Portekiz ve İspanya, "Badajoz Antlaşması"nı imzaladılar. Portekiz "Olivenza" şehrini kaybetti.', c:'empire'}
+        ],
         '01-21': [
-            {y:1774, t:'Osmanlı Padişahı III. Mustafa vefat etti, I. Abdülhamid tahta çıktı.', c:'empire'},
-            {y:1950, t:'İngiliz yazar George Orwell vefat etti.', c:'literature'},
-            {y:2024, t:'Alper Gezeravcı uzaya gitti.', c:'science'},
-            {y:1924, t:'Vladimir Lenin vefat etti.', c:'disaster'}
+            {y:1774,t:'Osmanlı Padişahı III. Mustafa vefat etti, I. Abdülhamid tahta çıktı.',c:'empire'},
+            {y:1950,t:'İngiliz yazar George Orwell vefat etti.',c:'literature'},
+            {y:2024,t:'Alper Gezeravcı uzaya gitti.',c:'science'},
+            {y:1924,t:'Vladimir Lenin vefat etti.',c:'disaster'}
         ],
         '01-22': [
-            {y:1517, t:'Yavuz Sultan Selim Ridaniye Zaferi\'ni kazandı.', c:'war'},
-            {y:1788, t:'Lord Byron doğdu.', c:'literature'},
-            {y:1984, t:'Apple Macintosh tanıtıldı.', c:'science'}
+            {y:1517,t:'Yavuz Sultan Selim Ridaniye Zaferi\'ni kazandı.',c:'war'},
+            {y:1788,t:'Lord Byron doğdu.',c:'literature'},
+            {y:1984,t:'Apple Macintosh tanıtıldı.',c:'science'}
         ],
-        '01-24': [{y:1993, t:'Gazeteci yazar Uğur Mumcu suikaste uğradı.', c:'disaster'}],
-        '04-23': [{y:1920, t:'TBMM açıldı.', c:'empire'}],
-        '05-29': [{y:1453, t:'İstanbul Fethedildi.', c:'war'}],
-        '08-30': [{y:1922, t:'Büyük Taarruz Zaferi.', c:'war'}],
-        '10-29': [{y:1923, t:'Türkiye Cumhuriyeti ilan edildi.', c:'empire'}]
+        '04-23':[{y:1920,t:'TBMM açıldı.',c:'empire'}],
+        '05-29':[{y:1453,t:'İstanbul Fethedildi.',c:'war'}],
+        '08-30':[{y:1922,t:'Büyük Taarruz Zaferi.',c:'war'}],
+        '10-29':[{y:1923,t:'Türkiye Cumhuriyeti ilan edildi.',c:'empire'}]
     };
 
-    const genFacts = ["Tarihçiler bu günü, sessiz ama önemli bir geçiş günü olarak not eder.", "Geçmişte bugün, insanlık tarihi için yeni bir sayfa açıldı."];
+    const genFacts = [
+        "Tarihçiler bu günü, sessiz ama önemli bir geçiş günü olarak not eder.",
+        "Geçmişte bugün, insanlık tarihi için yeni bir sayfa açıldı."
+    ];
 
-    let cY = 2026, cM = 0;
-    let currentEvents = []; 
-    let currentFilteredEvents = []; 
-    let activeFilter = 'all'; 
-    let currentDownloadYear = '';
-    let isSelectionMode = false; 
-    let currentExportBgColor = '#0b1120'; 
+    let cY=2026, cM=0;
+    let currentEvents=[], currentFilteredEvents=[], activeFilter='all';
+    let currentDownloadYear='', isSelectionMode=false;
+    let currentExportBgColor='#f4edd8';
+    let currentPreviewMode='card'; // 'card' or 'list'
     const today = new Date();
 
     function init() {
-        if(today.getFullYear() === 2026) { cY=2026; cM=today.getMonth(); }
-        renderCal(); 
-        setTimeout(() => selDay(today.getDate()), 50);
+        if(today.getFullYear()===2026){ cY=2026; cM=today.getMonth(); }
+        renderCal();
+        setTimeout(()=>selDay(today.getDate()), 50);
     }
 
     function renderCal() {
-        document.getElementById('monthTxt').innerText = `${mNames[cM]} ${cY}`;
-        const gr = document.getElementById('calGrid'); gr.innerHTML = '';
-        const f = new Date(cY, cM, 1);
-        const l = new Date(cY, cM+1, 0);
-        const start = (f.getDay() + 6) % 7;
-
-        for(let i=0; i<start; i++) gr.innerHTML += `<div class="day" style="opacity:0.3; pointer-events:none"></div>`;
-
-        for(let d=1; d<=l.getDate(); d++) {
-            const el = document.createElement('div');
-            el.className = 'day';
-            el.innerText = d;
-            
-            const sk = `${String(cM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-            const lk = `${cY}-${String(cM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-            let hType = fixedHolidays[sk]?.t || variableHolidays2026[lk]?.t;
-            
-            if(hType) el.innerHTML += `<div class="dots"><div class="dot ${hType === 'official' ? 'official' : 'religious'}"></div></div>`;
-            if(d === today.getDate() && cM === today.getMonth() && cY === today.getFullYear()) el.classList.add('today');
-
-            el.onclick = () => {
-                document.querySelectorAll('.day').forEach(x => x.classList.remove('selected'));
-                el.classList.add('selected');
-                selDay(d);
+        document.getElementById('monthTxt').innerText=`${mNames[cM]} ${cY}`;
+        const gr=document.getElementById('calGrid'); gr.innerHTML='';
+        const f=new Date(cY,cM,1), l=new Date(cY,cM+1,0);
+        const start=(f.getDay()+6)%7;
+        for(let i=0;i<start;i++) gr.innerHTML+=`<div class="day" style="opacity:0;pointer-events:none"></div>`;
+        for(let d=1;d<=l.getDate();d++){
+            const el=document.createElement('div');
+            el.className='day'; el.innerText=d;
+            const sk=`${String(cM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+            const lk=`${cY}-${String(cM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+            let hType=fixedHolidays[sk]?.t||variableHolidays2026[lk]?.t;
+            if(hType) el.innerHTML+=`<div class="dots"><div class="dot ${hType==='official'?'official':'religious'}"></div></div>`;
+            if(d===today.getDate()&&cM===today.getMonth()&&cY===today.getFullYear()) el.classList.add('today');
+            el.onclick=()=>{
+                document.querySelectorAll('.day').forEach(x=>x.classList.remove('selected'));
+                el.classList.add('selected'); selDay(d);
             }
             gr.appendChild(el);
         }
     }
 
     async function selDay(d) {
-        cancelSelectionMode(); 
+        cancelSelectionMode();
+        const dateObj=new Date(cY,cM,d);
+        const sk=`${String(cM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+        const lk=`${cY}-${String(cM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
 
-        const dateObj = new Date(cY, cM, d);
-        const sk = `${String(cM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-        const lk = `${cY}-${String(cM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+        document.getElementById('dNum').innerText=d;
+        document.getElementById('dFull').innerText=`${d} ${mNames[cM].toUpperCase()} ${cY}, ${dNames[dateObj.getDay()].toUpperCase()}`;
 
-        document.getElementById('dNum').innerText = d;
-        document.getElementById('dFull').innerText = `${d} ${mNames[cM].toUpperCase()} ${cY}, ${dNames[dateObj.getDay()].toUpperCase()}`;
-        
-        const dayOfYear = Math.floor((dateObj - new Date(dateObj.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
-        document.getElementById('dailyQuote').innerText = quotes[dayOfYear % quotes.length];
+        const dayOfYear=Math.floor((dateObj-new Date(dateObj.getFullYear(),0,0))/86400000);
+        document.getElementById('dailyQuote').innerText=quotes[dayOfYear%quotes.length];
 
-        const now = new Date(); now.setHours(0,0,0,0);
-        const target = new Date(cY, cM, d); target.setHours(0,0,0,0);
-        const diff = Math.ceil((target - now) / (1000 * 60 * 60 * 24));
-        const countBox = document.getElementById('countDisplay');
-        const countText = document.getElementById('countText');
-        
-        if(diff === 0) { countBox.style.display = 'none'; }
-        else { countBox.style.display = 'inline-flex'; countText.innerText = diff > 0 ? `${diff} Gün Kaldı` : `${Math.abs(diff)} Gün Geçti`; }
+        const now=new Date(); now.setHours(0,0,0,0);
+        const target=new Date(cY,cM,d); target.setHours(0,0,0,0);
+        const diff=Math.ceil((target-now)/86400000);
+        const cBox=document.getElementById('countDisplay');
+        if(diff===0){ cBox.style.display='none'; }
+        else { cBox.style.display='inline-flex'; document.getElementById('countText').innerText=diff>0?`${diff} Gün Kaldı`:`${Math.abs(diff)} Gün Geçti`; }
 
-        const hijri = getHijriDate(dateObj); document.getElementById('hijriText').innerText = `${hijri.d} ${hijri.m} ${hijri.y}`;
-        const moon = getMoonPhase(cY, cM+1, d); document.getElementById('moonText').innerText = moon.name; document.getElementById('moonIcon').className = moon.icon;
-        const season = getSeason(cM, d); document.getElementById('seasonText').innerText = season.name; document.getElementById('seasonIcon').className = season.icon;
+        const hijri=getHijriDate(dateObj); document.getElementById('hijriText').innerText=`${hijri.d} ${hijri.m} ${hijri.y}`;
+        const moon=getMoonPhase(cY,cM+1,d); document.getElementById('moonText').innerText=moon.name; document.getElementById('moonIcon').className=moon.icon;
+        const season=getSeason(cM,d); document.getElementById('seasonText').innerText=season.name; document.getElementById('seasonIcon').className=season.icon;
 
-        const ha = document.getElementById('holidayArea');
-        let hInfo = fixedHolidays[sk] || variableHolidays2026[lk];
-        if(hInfo) {
-            let cls = hInfo.t === 'official' ? 'ha-off' : 'ha-rel';
-            ha.innerHTML = `<div class="holiday-alert ${cls}"><i class="fas fa-flag" style="font-size:1.5rem"></i> <div>${hInfo.n}</div></div>`;
-        } else ha.innerHTML = '';
+        const ha=document.getElementById('holidayArea');
+        let hInfo=fixedHolidays[sk]||variableHolidays2026[lk];
+        if(hInfo){
+            let cls=hInfo.t==='official'?'ha-off':'ha-rel';
+            ha.innerHTML=`<div class="holiday-alert ${cls}"><i class="fas fa-flag"></i> <div>${hInfo.n}</div></div>`;
+        } else ha.innerHTML='';
 
-        const list = document.getElementById('historyList');
-        list.innerHTML = '<div style="text-align:center; opacity:0.6; padding:30px; font-weight:700;"><i class="fas fa-circle-notch fa-spin" style="font-size:2rem; margin-bottom:10px; color:var(--accent); display:block;"></i> Arşiv taranıyor...</div>';
-        
-        let events = offlineDB[sk] ? [...offlineDB[sk]] : [];
+        const list=document.getElementById('historyList');
+        list.innerHTML='<div style="text-align:center;opacity:0.4;padding:30px;font-family:Nunito,sans-serif;letter-spacing:2px;font-size:0.75rem;text-transform:uppercase;"><i class="fas fa-spinner fa-spin" style="font-size:1.4rem;color:var(--accent);display:block;margin-bottom:10px;"></i>Arşiv Taranıyor</div>';
 
+        let events=offlineDB[sk]?[...offlineDB[sk]]:[];
         try {
-            const controller = new AbortController(); setTimeout(() => controller.abort(), 1200);
-            const res = await fetch(`https://tr.wikipedia.org/api/rest_v1/feed/onthisday/events/${cM+1}/${d}`, { signal: controller.signal });
-            if(res.ok) {
-                const data = await res.json();
-                data.events.forEach(item => {
-                    const txt = item.text.toLowerCase();
-                    let category = 'general'; let isRelevant = false;
-                    for (const [cat, words] of Object.entries(keywords)) {
-                        if (words.some(w => txt.includes(w))) { category = cat; isRelevant = true; break; }
+            const controller=new AbortController(); setTimeout(()=>controller.abort(),1200);
+            const res=await fetch(`https://tr.wikipedia.org/api/rest_v1/feed/onthisday/events/${cM+1}/${d}`,{signal:controller.signal});
+            if(res.ok){
+                const data=await res.json();
+                data.events.forEach(item=>{
+                    const txt=item.text.toLowerCase();
+                    let category='general'; let isRel=false;
+                    for(const [cat,words] of Object.entries(keywords)){
+                        if(words.some(w=>txt.includes(w))){ category=cat; isRel=true; break; }
                     }
-                    if(isRelevant && !events.some(e => e.y == item.year)) events.push({ y: item.year, t: item.text, c: category });
+                    if(isRel&&!events.some(e=>e.y==item.year)) events.push({y:item.year,t:item.text,c:category});
                 });
             }
-        } catch(err) {}
+        } catch(err){}
 
-        if(events.length === 0) events.push({ y: 'BİLGİ', t: genFacts[d % genFacts.length], c: 'general' });
-        events.sort((a,b) => { if(a.y === 'BİLGİ') return 1; if(b.y === 'BİLGİ') return -1; return a.y - b.y; });
-        currentEvents = events;
-        
+        if(events.length===0) events.push({y:'BİLGİ',t:genFacts[d%genFacts.length],c:'general'});
+        events.sort((a,b)=>{ if(a.y==='BİLGİ') return 1; if(b.y==='BİLGİ') return -1; return a.y-b.y; });
+        currentEvents=events;
         renderEventsDOM();
     }
 
     function renderEventsDOM() {
-        const list = document.getElementById('historyList');
-        let html = '';
-        
-        let filtered = currentEvents;
-        if(activeFilter !== 'all') {
-            filtered = currentEvents.filter(e => e.c === activeFilter);
-        }
-        currentFilteredEvents = filtered;
-
-        if(filtered.length === 0) {
-            list.innerHTML = '<div style="text-align:center; opacity:0.6; padding:30px; font-weight:600;">Bu kategoride olay bulunamadı.</div>';
-            return;
-        }
-
-        filtered.forEach((e, index) => {
-            let tagLabel = 'Olay', theme = 'theme-gen', colorHex = '#94a3b8';
-            if(e.c === 'war') { tagLabel = 'SAVAŞ'; theme = 'theme-war'; colorHex = '#f87171'; }
-            else if(e.c === 'science') { tagLabel = 'BİLİM'; theme = 'theme-sci'; colorHex = '#34d399'; }
-            else if(e.c === 'literature') { tagLabel = 'EDEBİYAT'; theme = 'theme-lit'; colorHex = '#f472b6'; }
-            else if(e.c === 'art') { tagLabel = 'SANAT'; theme = 'theme-art'; colorHex = '#c084fc'; }
-            else if(e.c === 'disaster') { tagLabel = 'AFET/OLAY'; theme = 'theme-dis'; colorHex = '#fb923c'; }
-            else if(e.c === 'empire') { tagLabel = 'DEVLET'; theme = 'theme-emp'; colorHex = '#facc15'; }
-
-            let safeText = e.t.replace(/'/g, "\\'").replace(/"/g, "&quot;");
-            let delay = index * 0.08; 
-
-            html += `
-                <div class="event-card ${theme}" style="animation-delay: ${delay}s">
-                    <div class="ec-header">
-                        <div class="ec-title-group">
-                            <input type="checkbox" class="custom-checkbox event-select-cb" data-idx="${index}" title="Afişe ekle">
-                            <span class="ec-year">${e.y}</span>
-                            <span class="ec-tag">${tagLabel}</span>
-                        </div>
-                        <button class="share-btn" onclick="openPreviewSingle('${e.y}', '${safeText}', '${tagLabel}', '${colorHex}', '${e.c}')" title="Sadece Bu Olayı Paylaş">
+        const list=document.getElementById('historyList');
+        let filtered=activeFilter==='all'?currentEvents:currentEvents.filter(e=>e.c===activeFilter);
+        currentFilteredEvents=filtered;
+        const badge = document.getElementById('eventCountBadge');
+        if(badge) badge.innerText = filtered.length;
+        if(filtered.length===0){ list.innerHTML='<div style="text-align:center;opacity:0.4;padding:30px;font-family:Nunito,sans-serif;letter-spacing:2px;font-size:0.75rem;text-transform:uppercase;">Bu kategoride olay bulunamadı.</div>'; return; }
+        let html='';
+        filtered.forEach((e,i)=>{
+            let tagLabel='Olay',theme='theme-gen',colorHex='#6b7280';
+            if(e.c==='war')      { tagLabel='SAVAŞ';    theme='theme-war'; colorHex='#8b1c1c'; }
+            else if(e.c==='science')   { tagLabel='BİLİM';    theme='theme-sci'; colorHex='#1a6647'; }
+            else if(e.c==='literature'){ tagLabel='EDEBİYAT'; theme='theme-lit'; colorHex='#7a1f52'; }
+            else if(e.c==='art')       { tagLabel='SANAT';    theme='theme-art'; colorHex='#3e1d72'; }
+            else if(e.c==='disaster')  { tagLabel='AFET/OLAY';theme='theme-dis'; colorHex='#8b4010'; }
+            else if(e.c==='empire')    { tagLabel='DEVLET';   theme='theme-emp'; colorHex='#7a5c10'; }
+            let safeText=e.t.replace(/'/g,"\\'").replace(/"/g,"&quot;");
+            html+=`
+            <div class="event-card ${theme}" style="animation-delay:${i*0.07}s">
+                <div class="ec-top">
+                    <div class="ec-top-left">
+                        <input type="checkbox" class="custom-checkbox event-select-cb" data-idx="${i}" title="Afişe ekle">
+                        <span class="ec-year">${e.y}</span>
+                        <span class="ec-tag">${tagLabel}</span>
+                    </div>
+                    <div class="ec-actions">
+                        <button class="share-btn" onclick="openPreviewSingle('${e.y}','${safeText}','${tagLabel}','${colorHex}','${e.c}')" title="Bu Olayı Paylaş">
                             <i class="fas fa-share-nodes"></i>
                         </button>
                     </div>
+                </div>
+                <div class="ec-body">
                     <div class="ec-text">${e.t}</div>
-                </div>`;
+                </div>
+            </div>`;
         });
-        list.innerHTML = html;
+        list.innerHTML=html;
     }
 
     function filterEvents(cat) {
-        cancelSelectionMode();
-        activeFilter = cat;
-        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        cancelSelectionMode(); activeFilter=cat;
+        document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
         event.target.classList.add('active');
         renderEventsDOM();
     }
 
     function toggleSelectionMode() {
-        const list = document.getElementById('historyList');
-        const btn = document.getElementById('multiDownloadBtn');
-        const cancelBtn = document.getElementById('cancelSelectionBtn');
-
-        if (!isSelectionMode) {
-            isSelectionMode = true;
-            list.classList.add('selection-mode');
-            btn.innerHTML = '<i class="fas fa-download"></i> Afişi İndir';
-            btn.style.background = 'rgba(52, 211, 153, 0.15)'; 
-            btn.style.borderColor = 'rgba(52, 211, 153, 0.3)';
-            btn.style.color = '#34d399';
-            cancelBtn.style.display = 'inline-block';
-        } else {
-            shareSelectedEvents();
-        }
+        const list=document.getElementById('historyList');
+        const btn=document.getElementById('multiDownloadBtn');
+        const cancelBtn=document.getElementById('cancelSelectionBtn');
+        if(!isSelectionMode){
+            isSelectionMode=true; list.classList.add('selection-mode');
+            btn.innerHTML='<i class="fas fa-download"></i> AFİŞİ İNDİR';
+            btn.style.background='rgba(74,190,158,0.12)'; btn.style.borderColor='rgba(74,190,158,0.3)'; btn.style.color='var(--sci)';
+            cancelBtn.style.display='inline-block';
+        } else { shareSelectedEvents(); }
     }
 
     function cancelSelectionMode() {
-        if(!isSelectionMode) return;
-        isSelectionMode = false;
-        
-        const list = document.getElementById('historyList');
-        const btn = document.getElementById('multiDownloadBtn');
-        const cancelBtn = document.getElementById('cancelSelectionBtn');
-
+        if(!isSelectionMode) return; isSelectionMode=false;
+        const list=document.getElementById('historyList');
+        const btn=document.getElementById('multiDownloadBtn');
+        const cancelBtn=document.getElementById('cancelSelectionBtn');
         list.classList.remove('selection-mode');
-        btn.innerHTML = '<i class="fas fa-check-square"></i> Seç & İndir';
-        btn.style.background = 'rgba(56, 189, 248, 0.15)';
-        btn.style.borderColor = 'rgba(56, 189, 248, 0.3)';
-        btn.style.color = 'var(--accent)';
-        cancelBtn.style.display = 'none';
-
-        document.querySelectorAll('.custom-checkbox').forEach(cb => cb.checked = false);
+        btn.innerHTML='<i class="fas fa-check-square"></i> SEÇ & İNDİR';
+        btn.style.background='rgba(201,169,110,0.1)'; btn.style.borderColor='rgba(201,169,110,0.25)'; btn.style.color='var(--accent)';
+        cancelBtn.style.display='none';
+        document.querySelectorAll('.custom-checkbox').forEach(cb=>cb.checked=false);
     }
 
-    function selectColor(element, colorHex) {
-        document.querySelectorAll('.color-swatch').forEach(sw => sw.classList.remove('active'));
-        element.classList.add('active');
-        
-        currentExportBgColor = colorHex;
-        document.getElementById('exportCanvasArea').style.backgroundColor = currentExportBgColor;
-        document.getElementById('previewBox').style.backgroundColor = currentExportBgColor;
+    function selectColor(el, hex) {
+        document.querySelectorAll('.color-swatch').forEach(s=>s.classList.remove('active'));
+        el.classList.add('active');
+        currentExportBgColor=hex;
+        document.getElementById('exportCanvasArea').style.backgroundColor=hex;
+        document.getElementById('previewBox').style.backgroundColor=hex;
     }
 
     function openPreviewSingle(year, text, tag, color, category) {
-        openPreviewModal([{ y: year, t: text, tagLabel: tag, colorHex: color, c: category }]);
+        openPreviewModal([{y:year,t:text,tagLabel:tag,colorHex:color,c:category}]);
     }
 
     function shareSelectedEvents() {
-        const checkboxes = document.querySelectorAll('.event-select-cb:checked');
-        if (checkboxes.length === 0) {
-            alert("Lütfen afişe eklemek istediğiniz olayları, yanlarındaki kutucukları işaretleyerek seçin.");
-            return;
-        }
-        
-        let eventsToShare = [];
-        checkboxes.forEach(cb => {
-            let idx = cb.getAttribute('data-idx');
-            let e = currentFilteredEvents[idx];
-            
-            let tagLabel = 'Olay', colorHex = '#94a3b8';
-            if(e.c === 'war') { tagLabel = 'SAVAŞ'; colorHex = '#f87171'; }
-            else if(e.c === 'science') { tagLabel = 'BİLİM'; colorHex = '#34d399'; }
-            else if(e.c === 'literature') { tagLabel = 'EDEBİYAT'; colorHex = '#f472b6'; }
-            else if(e.c === 'art') { tagLabel = 'SANAT'; colorHex = '#c084fc'; }
-            else if(e.c === 'disaster') { tagLabel = 'AFET/OLAY'; colorHex = '#fb923c'; }
-            else if(e.c === 'empire') { tagLabel = 'DEVLET'; colorHex = '#facc15'; }
-            
-            eventsToShare.push({ y: e.y, t: e.t, tagLabel, colorHex, c: e.c });
+        const checkboxes=document.querySelectorAll('.event-select-cb:checked');
+        if(checkboxes.length===0){ alert("Lütfen afişe eklemek istediğiniz olayları seçin."); return; }
+        let eventsToShare=[];
+        checkboxes.forEach(cb=>{
+            let idx=cb.getAttribute('data-idx'); let e=currentFilteredEvents[idx];
+            let tagLabel='Olay',colorHex='#555';
+            if(e.c==='war')      { tagLabel='SAVAŞ';    colorHex='#8b1c1c'; }
+            else if(e.c==='science')   { tagLabel='BİLİM';    colorHex='#1a6647'; }
+            else if(e.c==='literature'){ tagLabel='EDEBİYAT'; colorHex='#7a1f52'; }
+            else if(e.c==='art')       { tagLabel='SANAT';    colorHex='#3e1d72'; }
+            else if(e.c==='disaster')  { tagLabel='AFET/OLAY';colorHex='#8b4010'; }
+            else if(e.c==='empire')    { tagLabel='DEVLET';   colorHex='#7a5c10'; }
+            eventsToShare.push({y:e.y,t:e.t,tagLabel,colorHex,c:e.c});
         });
-
         openPreviewModal(eventsToShare);
     }
 
     function openPreviewModal(eventsArray) {
-        currentDownloadYear = eventsArray.length === 1 ? eventsArray[0].y : 'Toplu';
+        currentDownloadYear=eventsArray.length===1?eventsArray[0].y:'Toplu';
+        const exportCanvas=document.getElementById('exportCanvasArea');
+        exportCanvas.querySelector('#expDate').innerText=document.getElementById('dFull').innerText;
 
-        const exportCanvas = document.getElementById('exportCanvasArea');
-        exportCanvas.querySelector('#expDate').innerText = document.getElementById('dFull').innerText;
+        // Mevsim ve ay fazı
+        const seasonEl = exportCanvas.querySelector('#expSeasonBadge');
+        const moonEl   = exportCanvas.querySelector('#expMoonBadge');
+        const hijriEl  = exportCanvas.querySelector('#expHijriBadge');
+        const seasonIcon = document.getElementById('seasonIcon');
+        const moonIcon   = document.getElementById('moonIcon');
+        const seasonTxt  = document.getElementById('seasonText').innerText;
+        const moonTxt    = document.getElementById('moonText').innerText;
+        const hijriTxt   = document.getElementById('hijriText').innerText;
+        const seasonIconClass = seasonIcon ? seasonIcon.className : 'fas fa-sun';
+        const moonIconClass   = moonIcon   ? moonIcon.className   : 'fas fa-moon';
+        if(seasonEl) seasonEl.innerHTML = `<i class="${seasonIconClass}" style="font-size:0.75rem;"></i> ${seasonTxt}`;
+        if(moonEl)   moonEl.innerHTML   = `<i class="${moonIconClass}" style="font-size:0.75rem;"></i> ${moonTxt}`;
+        if(hijriEl)  hijriEl.innerHTML  = `<i class="fas fa-mosque" style="font-size:0.75rem;"></i> ${hijriTxt}`;
+        const container=document.getElementById('exportCardsContainer');
+        container.innerHTML='';
 
-        const container = document.getElementById('exportCardsContainer');
-        container.innerHTML = ''; 
+        let count=eventsArray.length;
+        const displayEvents=eventsArray; // limit yok
 
-        let count = eventsArray.length;
-        if(count > 6) { count = 6; alert("En fazla 6 olay eklenebilir, ilk 6 olay afişe eklendi."); }
-        const displayEvents = eventsArray.slice(0, 6);
+        const isSingle=count===1;
 
-        let pad = count === 1 ? '80px 70px' : count === 2 ? '55px 60px' : count === 3 ? '40px 50px' : '30px 40px';
-        let ySize = count === 1 ? '8.5rem' : count === 2 ? '6rem' : count === 3 ? '4.5rem' : '3.8rem';
-        let tSize = count === 1 ? '3.4rem' : count === 2 ? '2.5rem' : count === 3 ? '2.1rem' : '1.7rem';
-        let tagSize = count === 1 ? '1.8rem' : count === 2 ? '1.4rem' : count === 3 ? '1.2rem' : '1.1rem';
-        let iSize = count === 1 ? '8rem' : count === 2 ? '5.5rem' : count === 3 ? '4rem' : '3rem';
-        let gap = count === 1 ? '35px' : count === 2 ? '25px' : count === 3 ? '20px' : '15px';
-        let gapBetween = count === 1 ? '0px' : '20px';
+        // Liste modu için dinamik font ölçeği (olay sayısına göre)
+        let listTextScale, listYearScale, listPadding;
+        if(count===1)       { listTextScale=1.75; listYearScale=4.2; listPadding=36; }
+        else if(count===2)  { listTextScale=1.60; listYearScale=3.9; listPadding=32; }
+        else if(count===3)  { listTextScale=1.48; listYearScale=3.6; listPadding=28; }
+        else if(count===4)  { listTextScale=1.38; listYearScale=3.2; listPadding=24; }
+        else if(count===5)  { listTextScale=1.28; listYearScale=2.9; listPadding=20; }
+        else if(count===6)  { listTextScale=1.20; listYearScale=2.6; listPadding=17; }
+        else if(count===7)  { listTextScale=1.12; listYearScale=2.4; listPadding=14; }
+        else if(count===8)  { listTextScale=1.05; listYearScale=2.2; listPadding=12; }
+        else if(count===9)  { listTextScale=0.98; listYearScale=2.0; listPadding=10; }
+        else if(count===10) { listTextScale=0.92; listYearScale=1.9; listPadding=9; }
+        else                { listTextScale=0.86; listYearScale=1.7; listPadding=8; }
 
-        displayEvents.forEach(ev => {
-            let themeClass = 'exp-theme-gen';
-            if(ev.c === 'war') themeClass = 'exp-theme-war';
-            else if(ev.c === 'science') themeClass = 'exp-theme-sci';
-            else if(ev.c === 'literature') themeClass = 'exp-theme-lit';
-            else if(ev.c === 'art') themeClass = 'exp-theme-art';
-            else if(ev.c === 'disaster') themeClass = 'exp-theme-dis';
-            else if(ev.c === 'empire') themeClass = 'exp-theme-emp';
+        // Kart modu için sütun ve font ölçeği
+        let cardCols, cardYearSize, cardTextSize, cardMetaPad, cardMinH;
+        if(count===1)       { cardCols=1; cardYearSize=7.5; cardTextSize=2.4; cardMetaPad=38; cardMinH=440; }
+        else if(count<=2)   { cardCols=2; cardYearSize=5.0; cardTextSize=1.50; cardMetaPad=30; cardMinH=340; }
+        else if(count<=4)   { cardCols=2; cardYearSize=4.4; cardTextSize=1.32; cardMetaPad=26; cardMinH=280; }
+        else if(count<=6)   { cardCols=2; cardYearSize=4.0; cardTextSize=1.22; cardMetaPad=22; cardMinH=240; }
+        else if(count<=9)   { cardCols=3; cardYearSize=3.4; cardTextSize=1.08; cardMetaPad=18; cardMinH=200; }
+        else if(count<=12)  { cardCols=3; cardYearSize=3.0; cardTextSize=1.00; cardMetaPad=16; cardMinH=178; }
+        else                { cardCols=4; cardYearSize=2.6; cardTextSize=0.92; cardMetaPad=14; cardMinH=155; }
 
-            let cardHTML = `
-                <div class="export-card ${themeClass}" style="padding: ${pad}; margin-bottom: ${gapBetween};">
-                    <div class="exp-strip"></div>
-                    <i class="fas fa-quote-right exp-quote-icon" style="font-size: ${iSize}; top: ${count<3?'40px':'20px'}; right: ${count<3?'40px':'20px'};"></i>
-                    <div class="export-meta" style="margin-bottom: ${gap}; padding-bottom: ${gap}; gap: ${gap};">
-                        <div class="export-year" style="font-size: ${ySize};">${ev.y}</div>
-                        <div class="export-tag" style="font-size: ${tagSize}; background-color: ${ev.colorHex}; padding: ${count<3?'12px 28px':'8px 20px'};">${ev.tagLabel}</div>
-                    </div>
-                    <div class="export-text" style="font-size: ${tSize};">${ev.t}</div>
+        // Kart modu grid CSS'i dinamik olarak ayarla
+        const styleTag = document.getElementById('dynamicExportStyle') || (() => {
+            const s = document.createElement('style');
+            s.id = 'dynamicExportStyle';
+            document.head.appendChild(s);
+            return s;
+        })();
+        styleTag.textContent = `
+            #exportCanvasArea.card-mode #exportCardsContainer,
+            #previewCloneWrapper.card-mode #exportCardsContainer {
+                grid-template-columns: repeat(${cardCols}, 1fr) !important;
+            }
+            #exportCanvasArea.card-mode .export-card,
+            #previewCloneWrapper.card-mode .export-card {
+                min-height: ${cardMinH}px;
+            }
+            #exportCanvasArea.card-mode .export-meta,
+            #previewCloneWrapper.card-mode .export-meta {
+                padding: ${cardMetaPad}px ${cardMetaPad}px ${Math.round(cardMetaPad*0.75)}px !important;
+            }
+            #exportCanvasArea.card-mode .export-year,
+            #previewCloneWrapper.card-mode .export-year { font-size: ${cardYearSize}rem !important; }
+            #exportCanvasArea.card-mode .export-text,
+            #previewCloneWrapper.card-mode .export-text { font-size: ${cardTextSize}rem !important; padding: ${Math.round(cardMetaPad*0.75)}px ${cardMetaPad}px !important; }
+            #exportCanvasArea.list-mode .export-card,
+            #previewCloneWrapper.list-mode .export-card { padding: ${listPadding}px 0 !important; }
+            #exportCanvasArea.list-mode .export-year,
+            #previewCloneWrapper.list-mode .export-year { font-size: ${listYearScale}rem !important; }
+            #exportCanvasArea.list-mode .export-text,
+            #previewCloneWrapper.list-mode .export-text { font-size: ${listTextScale}rem !important; }
+        `;
+
+        displayEvents.forEach(ev=>{
+            let themeClass='exp-theme-gen';
+            if(ev.c==='war')       themeClass='exp-theme-war';
+            else if(ev.c==='science')    themeClass='exp-theme-sci';
+            else if(ev.c==='literature') themeClass='exp-theme-lit';
+            else if(ev.c==='art')        themeClass='exp-theme-art';
+            else if(ev.c==='disaster')   themeClass='exp-theme-dis';
+            else if(ev.c==='empire')     themeClass='exp-theme-emp';
+
+            // Kategori ikonları (unicode semboller — font bağımsız)
+            let catIcon = '◆';
+            if(ev.c==='war')         catIcon = '⚔';
+            else if(ev.c==='science')     catIcon = '✦';
+            else if(ev.c==='literature')  catIcon = '✒';
+            else if(ev.c==='art')         catIcon = '❋';
+            else if(ev.c==='disaster')    catIcon = '⚡';
+            else if(ev.c==='empire')      catIcon = '♛';
+
+            const singleCls=isSingle?' single-mode':'';
+
+            // Liste modu için inline style (CSS class override için)
+            const listYearInline=`data-lysz="${listYearScale}"`;
+            const listTextInline=`data-ltsz="${listTextScale}"`;
+
+            container.innerHTML+=`
+            <div class="export-card ${themeClass}${singleCls}">
+                <div class="exp-strip"></div>
+                <div class="export-meta">
+                    <div class="export-year">${ev.y}</div>
+                    <div class="export-tag"><span class="exp-cat-icon">${catIcon}</span> ${ev.tagLabel}</div>
                 </div>
-            `;
-            container.innerHTML += cardHTML;
+                <div class="export-text">${ev.t}</div>
+            </div>`;
         });
 
-        // Seçili rengi uygula
-        exportCanvas.style.backgroundColor = currentExportBgColor;
-        document.getElementById('previewBox').style.backgroundColor = currentExportBgColor;
+        exportCanvas.style.backgroundColor=currentExportBgColor;
+        document.getElementById('previewBox').style.backgroundColor=currentExportBgColor;
 
-        const cloneWrapper = document.getElementById('previewCloneWrapper');
-        cloneWrapper.innerHTML = ''; 
-        cloneWrapper.innerHTML = exportCanvas.innerHTML; 
+        // Reset to card mode on open
+        exportCanvas.classList.remove('list-mode');
+        exportCanvas.classList.add('card-mode');
+        currentPreviewMode = 'card';
+        const _cb = document.getElementById('previewCardBtn');
+        const _lb = document.getElementById('previewListBtn');
+        if(_cb){ _cb.style.background='var(--accent)'; _cb.style.color='#1a1200'; }
+        if(_lb){ _lb.style.background='transparent'; _lb.style.color='var(--muted)'; }
 
-        document.getElementById('previewModal').style.display = 'flex';
+        const cloneWrapper=document.getElementById('previewCloneWrapper');
+        cloneWrapper.innerHTML='';
+        cloneWrapper.classList.remove('list-mode');
+        cloneWrapper.classList.add('card-mode');
+        cloneWrapper.innerHTML=exportCanvas.innerHTML;
 
-        setTimeout(() => {
-            const previewBox = document.getElementById('previewBox');
-            const previewBoxWidth = previewBox.offsetWidth;
-            const scaleRatio = previewBoxWidth / 1080; 
-            
-            cloneWrapper.style.transform = `scale(${scaleRatio})`;
-            
-            const actualHeight = exportCanvas.offsetHeight;
-            previewBox.style.height = `${actualHeight * scaleRatio}px`;
+        document.getElementById('previewModal').style.display='flex';
 
-        }, 20);
+        setTimeout(()=>{
+            const previewBox=document.getElementById('previewBox');
+            const w=previewBox.offsetWidth;
+            const ratio=w/1080;
+            cloneWrapper.style.transform=`scale(${ratio})`;
+            const actualH=exportCanvas.offsetHeight;
+            previewBox.style.height=`${actualH*ratio}px`;
+        },20);
     }
 
     function closePreview() {
-        document.getElementById('previewModal').style.display = 'none';
-        document.getElementById('previewCloneWrapper').innerHTML = ''; 
+        document.getElementById('previewModal').style.display='none';
+        const cw = document.getElementById('previewCloneWrapper');
+        cw.innerHTML='';
+        cw.classList.remove('list-mode','card-mode');
     }
 
     async function downloadCard() {
-        const overlay = document.getElementById('loadingOverlay');
-        overlay.style.display = 'flex'; 
-
-        const targetDiv = document.getElementById('exportCanvasArea');
-        
+        const overlay=document.getElementById('loadingOverlay');
+        overlay.style.display='flex';
+        const targetDiv=document.getElementById('exportCanvasArea');
         try {
-            const exportWidth = targetDiv.offsetWidth;
-            const exportHeight = targetDiv.offsetHeight;
-
-            const canvas = await html2canvas(targetDiv, {
-                scale: 2, 
-                width: exportWidth,
-                height: exportHeight,
-                useCORS: true,
-                backgroundColor: currentExportBgColor
+            const rawH = targetDiv.offsetHeight;
+            const capH = Math.min(rawH, 1350);
+            const canvas=await html2canvas(targetDiv,{
+                scale:2, width:1080, height:capH,
+                useCORS:true, backgroundColor:currentExportBgColor
             });
+            const imageURL=canvas.toDataURL("image/png");
+            const link=document.createElement('a');
+            link.download=`MuGol_TarihteBugun_${currentDownloadYear}.png`;
+            link.href=imageURL; link.click();
+            closePreview(); cancelSelectionMode();
+        } catch(err){ alert("Kart oluşturulurken bir hata oluştu."); console.error(err); }
+        finally { overlay.style.display='none'; }
+    }
 
-            const imageURL = canvas.toDataURL("image/png");
+    /* ─── YARDIMCILAR ─── */
+    function getHijriDate(date) {
+        const day=date.getDate(),month=date.getMonth(),year=date.getFullYear();
+        let m=month+1,y=year; if(m<3){y-=1;m+=12;}
+        let a=Math.floor(y/100),b=2-a+Math.floor(a/4); if(y<1583) b=0;
+        let jd=Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+day+b-1524;
+        let z=jd-1948440+10632,n=Math.floor((z-1)/10631); z=z-10631*n+354;
+        let j=(Math.floor((10985-z)/5316))*(Math.floor((50*z)/17719))+(Math.floor(z/5670))*(Math.floor((43*z)/15238));
+        z=z-(Math.floor((30-j)/15))*(Math.floor((17719*j)/50))-(Math.floor(j/16))*(Math.floor((15238*j)/43))+29;
+        let mH=Math.floor(24*z/709),dH=z-Math.floor(709*mH/24),yH=30*n+j-30;
+        const hM=['Muharrem','Safer','Rebiülevvel','Rebiülahir','Cemaziyelevvel','Cemaziyelahir','Recep','Şaban','Ramazan','Şevval','Zilkade','Zilhicce'];
+        return {d:dH,m:hM[mH-1],y:yH};
+    }
+    function getSeason(m,d) {
+        if(m<2||(m===2&&d<21)) return {name:'Kış',icon:'fas fa-snowflake'};
+        if(m<5||(m===5&&d<21)) return {name:'İlkbahar',icon:'fas fa-seedling'};
+        if(m<8||(m===8&&d<22)) return {name:'Yaz',icon:'fas fa-sun'};
+        if(m<11||(m===11&&d<21)) return {name:'Sonbahar',icon:'fab fa-canadian-maple-leaf'};
+        return {name:'Kış',icon:'fas fa-snowflake'};
+    }
+    function getMoonPhase(year,month,day) {
+        let r=year%100; r%=19; if(r>9){r-=19;}
+        r=((r*11)%30)+parseInt(month)+parseInt(day);
+        if(month<3){r+=2;} r-=(year<2000)?4:8.3;
+        r=Math.floor(r+0.5)%30; let res=(r<0)?r+30:r;
+        if(res<2) return {name:'Yeni Ay',icon:'fas fa-circle'};
+        if(res<7) return {name:'Hilal',icon:'fas fa-moon'};
+        if(res<10) return {name:'İlk Dördün',icon:'fas fa-adjust'};
+        if(res<16) return {name:'Dolunay',icon:'far fa-circle'};
+        if(res<24) return {name:'Son Dördün',icon:'fas fa-adjust'};
+        return {name:'Hilal',icon:'fas fa-moon'};
+    }
+    function changeDate(dir){ cM+=dir; if(cM>11){cM=0;cY++;} if(cM<0){cM=11;cY--;} renderCal(); selDay(1); }
+    function resetToday(){ if(today.getFullYear()===2026){cY=2026;cM=today.getMonth();} renderCal(); setTimeout(()=>document.querySelector('.day.today')?.click(),50); }
+    function togglePicker(){ document.getElementById('datePicker').classList.toggle('active'); }
+    function applyJump(){ const y=parseInt(document.getElementById('jumpYear').value); if(y){cY=y;cM=parseInt(document.getElementById('jumpMonth').value);renderCal();selDay(1);togglePicker();} }
+    function copyContent(){ if(!currentEvents.length) return; let txt=`📅 MuGöl Takvim (${document.getElementById('dFull').innerText})\n\n`; currentEvents.forEach(e=>txt+=`• ${e.y}: ${e.t}\n`); navigator.clipboard.writeText(txt).then(()=>alert("Tüm liste kopyalandı!")); }
 
-            const link = document.createElement('a');
-            link.download = `MuGol_TarihteBugun_${currentDownloadYear}.png`;
-            link.href = imageURL;
-            link.click();
-            
-            closePreview(); 
-            cancelSelectionMode(); 
+    function setPreviewMode(mode) {
+        currentPreviewMode = mode;
+        const exportCanvas = document.getElementById('exportCanvasArea');
+        const cloneWrapper = document.getElementById('previewCloneWrapper');
+        const previewBox = document.getElementById('previewBox');
+        const cardBtn = document.getElementById('previewCardBtn');
+        const listBtn = document.getElementById('previewListBtn');
+        if(mode === 'list') {
+            exportCanvas.classList.remove('card-mode');
+            exportCanvas.classList.add('list-mode');
+            cloneWrapper.classList.remove('card-mode');
+            cloneWrapper.classList.add('list-mode');
+            if(cardBtn){ cardBtn.style.background='transparent'; cardBtn.style.color='var(--muted)'; }
+            if(listBtn){ listBtn.style.background='var(--accent)'; listBtn.style.color='#1a1200'; }
+        } else {
+            exportCanvas.classList.remove('list-mode');
+            exportCanvas.classList.add('card-mode');
+            cloneWrapper.classList.remove('list-mode');
+            cloneWrapper.classList.add('card-mode');
+            if(cardBtn){ cardBtn.style.background='var(--accent)'; cardBtn.style.color='#1a1200'; }
+            if(listBtn){ listBtn.style.background='transparent'; listBtn.style.color='var(--muted)'; }
+        }
+        // Refresh clone
+        cloneWrapper.innerHTML = exportCanvas.innerHTML;
+        setTimeout(() => {
+            const w = previewBox.offsetWidth;
+            const ratio = w / 1080;
+            cloneWrapper.style.transform = `scale(${ratio})`;
+            const actualH = exportCanvas.offsetHeight;
+            previewBox.style.height = `${actualH * ratio}px`;
+        }, 20);
+    }
 
-        } catch (error) {
-            alert("Kart oluşturulurken bir hata oluştu.");
-            console.error(error);
-        } finally {
-            overlay.style.display = 'none'; 
+    function toggleTheme() {
+        const root = document.documentElement;
+        const icon = document.getElementById('themeIcon');
+        if (root.classList.contains('light-mode')) {
+            root.classList.remove('light-mode');
+            icon.className = 'fas fa-moon';
+        } else {
+            root.classList.add('light-mode');
+            icon.className = 'fas fa-sun';
         }
     }
-
-    /* -- YARDIMCI FONKSİYONLAR -- */
-    function getHijriDate(date) {
-        const day = date.getDate(); const month = date.getMonth(); const year = date.getFullYear();
-        let m = month + 1; let y = year; if (m < 3) { y -= 1; m += 12; }
-        let a = Math.floor(y / 100); let b = 2 - a + Math.floor(a / 4); if (y < 1583) b = 0;
-        let jd = Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + day + b - 1524;
-        let z = jd - 1948440 + 10632; let n = Math.floor((z - 1) / 10631); z = z - 10631 * n + 354;
-        let j = (Math.floor((10985 - z) / 5316)) * (Math.floor((50 * z) / 17719)) + (Math.floor(z / 5670)) * (Math.floor((43 * z) / 15238));
-        z = z - (Math.floor((30 - j) / 15)) * (Math.floor((17719 * j) / 50)) - (Math.floor(j / 16)) * (Math.floor((15238 * j) / 43)) + 29;
-        let mH = Math.floor(24 * z / 709); let dH = z - Math.floor(709 * mH / 24); let yH = 30 * n + j - 30;
-        const hM = ["Muharrem", "Safer", "Rebiülevvel", "Rebiülahir", "Cemaziyelevvel", "Cemaziyelahir", "Recep", "Şaban", "Ramazan", "Şevval", "Zilkade", "Zilhicce"];
-        return { d: dH, m: hM[mH - 1], y: yH };
-    }
-
-    function getSeason(m, d) {
-        if (m < 2 || (m === 2 && d < 21)) return {name:'Kış', icon:'fas fa-snowflake'};
-        if (m < 5 || (m === 5 && d < 21)) return {name:'İlkbahar', icon:'fas fa-seedling'};
-        if (m < 8 || (m === 8 && d < 22)) return {name:'Yaz', icon:'fas fa-sun'};
-        if (m < 11 || (m === 11 && d < 21)) return {name:'Sonbahar', icon:'fab fa-canadian-maple-leaf'};
-        return {name:'Kış', icon:'fas fa-snowflake'};
-    }
-
-    function getMoonPhase(year, month, day) {
-        let r = year % 100; r %= 19; if (r > 9) { r -= 19; }
-        r = ((r * 11) % 30) + parseInt(month) + parseInt(day);
-        if (month < 3) { r += 2; } r -= ((year < 2000) ? 4 : 8.3);
-        r = Math.floor(r + 0.5) % 30; let res = (r < 0) ? r + 30 : r;
-        if(res < 2) return {name:'Yeni Ay', icon:'fas fa-circle'};
-        if(res < 7) return {name:'Hilal', icon:'fas fa-moon'};
-        if(res < 10) return {name:'İlk Dördün', icon:'fas fa-adjust'};
-        if(res < 16) return {name:'Dolunay', icon:'far fa-circle'};
-        if(res < 24) return {name:'Son Dördün', icon:'fas fa-adjust'};
-        return {name:'Hilal', icon:'fas fa-moon'};
-    }
-
-    function changeDate(dir) { cM += dir; if(cM > 11) { cM = 0; cY++; } if(cM < 0) { cM = 11; cY--; } renderCal(); selDay(1); }
-    function resetToday() { if(today.getFullYear() === 2026) { cY=2026; cM=today.getMonth(); } renderCal(); setTimeout(() => document.querySelector('.day.today')?.click(), 50); }
-    function togglePicker() { document.getElementById('datePicker').classList.toggle('active'); }
-    function applyJump() { const y = parseInt(document.getElementById('jumpYear').value); if(y) { cY = y; cM = parseInt(document.getElementById('jumpMonth').value); renderCal(); selDay(1); togglePicker(); } }
-    function copyContent() { if(!currentEvents.length) return; let txt = `📅 MuGöl Takvim (${document.getElementById('dFull').innerText})\n\n`; currentEvents.forEach(e => txt += `• ${e.y}: ${e.t}\n`); navigator.clipboard.writeText(txt).then(() => alert("Tüm liste kopyalandı!")); }
 
     init();
 </script>
