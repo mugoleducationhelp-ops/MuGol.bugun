@@ -1,6 +1,6 @@
 {
   "name": "MuGöl Takvim - Tarihte Bugün",
-  "short_name": "MuGöl",
+  "short_name": "MuGöl Takvim",
   "description": "Tarihte bugün yaşanan önemli olayları gösteren takvim uygulaması.",
   "start_url": "./index.html",
   "scope": "./",
