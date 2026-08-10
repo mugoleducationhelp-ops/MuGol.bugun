@@ -1,0 +1,26 @@
+{
+  "name": "MuGöl Takvim - Tarihte Bugün",
+  "short_name": "MuGöl",
+  "description": "Tarihte bugün yaşanan önemli olayları gösteren takvim uygulaması.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#08090f",
+  "theme_color": "#08090f",
+  "orientation": "portrait",
+  "lang": "tr",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
